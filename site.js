@@ -242,6 +242,41 @@ if (awardGallery) {
     });
 }
 
+// Compact navigation for tablet and mobile.
+const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+if (floatingHeader && mobileMenuToggle) {
+  const primaryLinks = document.getElementById("primary-links");
+  const closeMobileMenu = () => {
+    floatingHeader.classList.remove("menu-open");
+    mobileMenuToggle.setAttribute("aria-expanded", "false");
+    mobileMenuToggle.querySelector(".mobile-menu-icon").textContent = "☰";
+    closeDropdowns();
+  };
+  const openMobileMenu = () => {
+    floatingHeader.classList.add("menu-open");
+    mobileMenuToggle.setAttribute("aria-expanded", "true");
+    mobileMenuToggle.querySelector(".mobile-menu-icon").textContent = "×";
+    floatingHeader.classList.remove("header-hidden");
+  };
+  mobileMenuToggle.addEventListener("click", () => {
+    floatingHeader.classList.contains("menu-open")
+      ? closeMobileMenu()
+      : openMobileMenu();
+  });
+  primaryLinks?.querySelectorAll("a").forEach((link) =>
+    link.addEventListener("click", closeMobileMenu),
+  );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && floatingHeader.classList.contains("menu-open")) {
+      closeMobileMenu();
+      mobileMenuToggle.focus();
+    }
+  });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 900) closeMobileMenu();
+  });
+}
+
 // Keep navigation available at the top and on upward scroll; clear the view on descent.
 const floatingHeader = document.querySelector(".floating-header");
 if (floatingHeader) {
@@ -252,7 +287,8 @@ if (floatingHeader) {
     const delta = current - previousScroll;
     const interacting =
       floatingHeader.contains(document.activeElement) ||
-      floatingHeader.querySelector("details[open]");
+      floatingHeader.querySelector("details[open]") ||
+      floatingHeader.classList.contains("menu-open");
     if (current < 80 || interacting || delta < -5)
       floatingHeader.classList.remove("header-hidden");
     else if (delta > 5) floatingHeader.classList.add("header-hidden");
