@@ -241,3 +241,35 @@ if (awardGallery) {
       /* The useful static collection introduction remains visible. */
     });
 }
+
+// Keep navigation available at the top and on upward scroll; clear the view on descent.
+const floatingHeader = document.querySelector(".floating-header");
+if (floatingHeader) {
+  let previousScroll = Math.max(0, window.scrollY);
+  let scrollQueued = false;
+  function updateHeader() {
+    const current = Math.max(0, window.scrollY);
+    const delta = current - previousScroll;
+    const interacting =
+      floatingHeader.contains(document.activeElement) ||
+      floatingHeader.querySelector("details[open]");
+    if (current < 80 || interacting || delta < -5)
+      floatingHeader.classList.remove("header-hidden");
+    else if (delta > 5) floatingHeader.classList.add("header-hidden");
+    if (Math.abs(delta) > 5) previousScroll = current;
+    scrollQueued = false;
+  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!scrollQueued) {
+        requestAnimationFrame(updateHeader);
+        scrollQueued = true;
+      }
+    },
+    { passive: true },
+  );
+  floatingHeader.addEventListener("focusin", () =>
+    floatingHeader.classList.remove("header-hidden"),
+  );
+}

@@ -1620,3 +1620,50 @@ footer a {
     font-size: 40px;
   }
 }
+
+/* Give the opening identity its own screen and make navigation direction-aware. */
+.home-page .hero {
+  min-height: calc(100svh - var(--header-clearance));
+  padding-bottom: 72px;
+}
+.floating-header {
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+.floating-header.header-hidden {
+  transform: translate(-50%, calc(-100% - 24px));
+  opacity: 0;
+  pointer-events: none;
+}
+.floating-header:focus-within {
+  transform: translateX(-50%);
+  opacity: 1;
+  pointer-events: auto;
+}
+.cadet-subsection {
+  margin-top: 36px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+.cadet-subsection > h3 {
+  font:
+    400 29px/1.25 Georgia,
+    serif;
+  margin: 0 0 20px;
+}
+.recognition-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 24px 0;
+}
+.contents .subsection-link {
+  padding-left: 14px;
+  font-size: 13px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .floating-header {
+    transition: none;
+  }
+}
