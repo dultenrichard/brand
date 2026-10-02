@@ -26,3 +26,27 @@ if (form) {
     document.getElementById("form-status").textContent = "Email draft requested. Your message has not been sent by this website.";
   });
 }
+
+
+// Native disclosures work without JavaScript; enhance dismissal and exclusivity.
+const navDropdowns = [...document.querySelectorAll('.nav-dropdown')];
+function closeDropdowns(except = null) {
+  navDropdowns.forEach(dropdown => { if (dropdown !== except) dropdown.open = false; });
+}
+navDropdowns.forEach(dropdown => {
+  const summary = dropdown.querySelector('summary');
+  summary.addEventListener('click', () => { if (!dropdown.open) closeDropdowns(dropdown); });
+  dropdown.addEventListener('toggle', () => { if (dropdown.open) closeDropdowns(dropdown); });
+  dropdown.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeDropdowns()));
+});
+document.addEventListener('click', event => {
+  if (!event.target.closest('.nav-dropdown')) closeDropdowns();
+});
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  const open = navDropdowns.find(dropdown => dropdown.open);
+  if (open) { closeDropdowns(); open.querySelector('summary').focus(); }
+});
+document.addEventListener('focusin', event => {
+  if (!event.target.closest('.nav-dropdown')) closeDropdowns();
+});
