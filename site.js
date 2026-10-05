@@ -1,4 +1,143 @@
 "use strict";
+
+const PROFILE_PHOTO = "./dulten-fromentin-profile.webp";
+
+document.querySelectorAll('.floating-header .brand img[src$="dulten-richard-monogram.png"]').forEach((img) => {
+  img.src = PROFILE_PHOTO;
+  img.alt = "";
+});
+const heroIdentityImage = document.querySelector(".hero-monogram");
+if (heroIdentityImage) {
+  heroIdentityImage.src = PROFILE_PHOTO;
+  heroIdentityImage.alt = "Portrait of Dulten Fromentin";
+}
+
+const safeCampaignContext = (() => {
+  const params = new URLSearchParams(window.location.search);
+  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_content"];
+  const context = {};
+  allowed.forEach((key) => {
+    const value = params.get(key);
+    if (value) context[key] = value.slice(0, 100);
+  });
+  return context;
+})();
+
+function trackEvent(name, data = {}) {
+  const payload = { ...safeCampaignContext, ...data };
+  if (window.umami && typeof window.umami.track === "function") {
+    window.umami.track(name, payload);
+  }
+  window.dispatchEvent(
+    new CustomEvent("site:analytics", { detail: { name, data: payload } }),
+  );
+}
+
+function compactLabel(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().slice(0, 100);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  trackEvent("page_loaded", { page: window.location.pathname });
+
+  if (window.location.pathname.endsWith("/contact.html")) {
+    trackEvent("contact_view");
+  }
+
+  const prefilledTopic = new URLSearchParams(window.location.search).get("topic");
+  if (prefilledTopic) {
+    trackEvent("contact_topic_prefill", { topic: compactLabel(prefilledTopic) });
+  }
+
+  document.querySelectorAll(".nav-dropdown").forEach((dropdown) => {
+    dropdown.addEventListener("toggle", () => {
+      if (dropdown.open) {
+        trackEvent("nav_open", {
+          section: compactLabel(dropdown.querySelector("summary")?.textContent),
+        });
+      }
+    });
+  });
+
+  const seenSections = new Set();
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || entry.intersectionRatio < 0.5) return;
+          const id = entry.target.id;
+          if (!id || seenSections.has(id)) return;
+          seenSections.add(id);
+          trackEvent("section_view", { section: id });
+        });
+      },
+      { threshold: [0.5] },
+    );
+    document.querySelectorAll("main section[id], main .detail[id]").forEach((section) =>
+      observer.observe(section),
+    );
+  }
+
+  const scrollMilestones = new Set();
+  window.addEventListener("scroll", () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    const percent = Math.round((window.scrollY / scrollable) * 100);
+    [25, 50, 75, 90].forEach((mark) => {
+      if (percent >= mark && !scrollMilestones.has(mark)) {
+        scrollMilestones.add(mark);
+        trackEvent("scroll_depth", { percent: mark });
+      }
+    });
+  }, { passive: true });
+});
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a");
+  if (!link) return;
+  const href = link.getAttribute("href") || "";
+  const label = compactLabel(link.textContent);
+
+  if (link.closest(".dropdown-panel")) {
+    trackEvent("nav_click", { label, destination: href.slice(0, 160) });
+  }
+  if (link.matches(".button, .text-link")) {
+    trackEvent("cta_click", { label, destination: href.slice(0, 160) });
+  }
+  if (href.startsWith("mailto:")) {
+    trackEvent("email_click", {
+      placement: link.closest(".contact-options")
+        ? "contact_options"
+        : link.closest(".dropdown-panel")
+          ? "nav_dropdown"
+          : link.closest(".actions")
+            ? "actions"
+            : "other",
+    });
+    return;
+  }
+  if (link.classList.contains("social-link")) {
+    let platform = "other";
+    if (href.includes("linkedin.com")) platform = "linkedin";
+    else if (href.includes("github.com")) platform = "github";
+    else if (href.includes("instagram.com")) platform = "instagram";
+    trackEvent("social_click", { platform });
+    return;
+  }
+  try {
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin && /^https?:$/.test(url.protocol)) {
+      trackEvent("outbound_click", { host: url.hostname.slice(0, 100) });
+    }
+  } catch {}
+  if (link.closest(".award-artifact") && /certificate|document/i.test(label)) {
+    trackEvent("certificate_view", { label });
+  }
+  if (window.location.pathname.endsWith("/sources.html")) {
+    trackEvent("source_open", { label, destination: href.slice(0, 160) });
+  }
+});
+
 const copyButton = document.getElementById("copy-email");
 if (copyButton && navigator.clipboard && window.isSecureContext) {
   copyButton.hidden = false;
@@ -7,6 +146,7 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
     try {
       await navigator.clipboard.writeText("fromentindulten@gmail.com");
       status.textContent = "Email address copied.";
+      trackEvent("email_copy");
     } catch {
       status.textContent = "Please select and copy the email address above.";
     }
@@ -29,6 +169,7 @@ if (form) {
         "Please enter your name and a message.";
       return;
     }
+    trackEvent("contact_prepare", { topic: compactLabel(fields.get("topic")) });
     const subject = fields.get("topic") + " enquiry from " + name;
     const body =
       message + "\n\n" + name + "\nReply email: " + fields.get("email");
@@ -158,6 +299,7 @@ if (skillSearch) {
   filters.forEach((button) =>
     button.addEventListener("click", () => {
       selected = button.dataset.skill;
+      trackEvent("skill_filter", { skill: selected });
       renderSkills(true);
     }),
   );
@@ -165,6 +307,7 @@ if (skillSearch) {
   document.getElementById("clear-skills").addEventListener("click", () => {
     selected = "";
     skillSearch.value = "";
+    trackEvent("skill_clear");
     renderSkills(true);
     skillSearch.focus();
   });

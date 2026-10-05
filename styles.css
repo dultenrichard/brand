@@ -1793,3 +1793,37 @@ footer a {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Portrait profile media */
+.floating-header .brand img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 24%;
+  border: 1px solid #c9b58655;
+  background: var(--soft);
+}
+.hero-monogram {
+  width: clamp(176px, 24vw, 300px);
+  height: auto;
+  aspect-ratio: 360 / 495;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 18px;
+  border: 1px solid #c9b58644;
+  box-shadow: 0 18px 50px #0005;
+}
+@media (max-width: 750px) {
+  .hero-monogram {
+    width: clamp(130px, 30vw, 200px);
+  }
+}
+@media (max-width: 440px) {
+  .hero-monogram {
+    width: 88px;
+    height: 121px;
+    flex-shrink: 0;
+  }
+}
