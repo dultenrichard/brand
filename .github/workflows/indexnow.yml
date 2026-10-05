@@ -1,0 +1,39 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.html"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "data/**"
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for GitHub Pages deployment
+        run: sleep 45
+
+      - name: Notify IndexNow
+        env:
+          INDEXNOW_KEY: c8197b3d20805844987f1b06cde33623
+        run: |
+          curl --fail-with-body --retry 3 --retry-delay 10             -H "Content-Type: application/json; charset=utf-8"             -d '{
+              "host": "dultenrichard.github.io",
+              "key": "'"$INDEXNOW_KEY"'",
+              "keyLocation": "https://dultenrichard.github.io/brand/'"$INDEXNOW_KEY"'.txt",
+              "urlList": [
+                "https://dultenrichard.github.io/brand/",
+                "https://dultenrichard.github.io/brand/experience.html",
+                "https://dultenrichard.github.io/brand/skills.html",
+                "https://dultenrichard.github.io/brand/awards.html",
+                "https://dultenrichard.github.io/brand/sources.html",
+                "https://dultenrichard.github.io/brand/contact.html",
+                "https://dultenrichard.github.io/brand/sitemap.xml"
+              ]
+            }'             https://api.indexnow.org/indexnow
