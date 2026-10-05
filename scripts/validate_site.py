@@ -1,0 +1,85 @@
+from __future__ import annotations
+
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import urlsplit
+
+ROOT = Path(__file__).resolve().parents[1]
+REQUIRED = [
+    "index.html",
+    "experience.html",
+    "skills.html",
+    "awards.html",
+    "sources.html",
+    "contact.html",
+    "styles.css",
+    "site.js",
+    "dulten-richard-monogram.png",
+    "dulten-fromentin-profile.webp",
+]
+
+class LinkParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.refs: list[tuple[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs):
+        values = dict(attrs)
+        for key in ("href", "src"):
+            value = values.get(key)
+            if value:
+                self.refs.append((key, value))
+
+def local_target(page: Path, value: str) -> Path | None:
+    if value.startswith(("#", "mailto:", "tel:", "data:", "javascript:")):
+        return None
+    parts = urlsplit(value)
+    if parts.scheme or parts.netloc:
+        return None
+    raw_path = parts.path
+    if not raw_path:
+        return None
+    return (page.parent / raw_path).resolve()
+
+def main() -> None:
+    errors: list[str] = []
+
+    for relative in REQUIRED:
+        if not (ROOT / relative).exists():
+            errors.append(f"Missing required file: {relative}")
+
+    for path in ROOT.glob("*.html"):
+        text = path.read_text(encoding="utf-8")
+        if any(marker in text for marker in ("<<<<<<<", "=======", ">>>>>>>")):
+            errors.append(f"Merge-conflict marker found in {path.name}")
+        if "</html>" not in text.lower():
+            errors.append(f"Missing </html> in {path.name}")
+
+        parser = LinkParser()
+        parser.feed(text)
+        for attr, value in parser.refs:
+            target = local_target(path, value)
+            if target is None:
+                continue
+            try:
+                target.relative_to(ROOT.resolve())
+            except ValueError:
+                errors.append(f"{path.name}: {attr} escapes repository: {value}")
+                continue
+            if not target.exists():
+                errors.append(f"{path.name}: broken local {attr}: {value}")
+
+    index = (ROOT / "index.html").read_text(encoding="utf-8")
+    if 'href="./dulten-richard-monogram.png" rel="icon"' not in index:
+        errors.append("Production favicon is no longer the DR monogram.")
+
+    if errors:
+        print("Website validation failed:")
+        for error in errors:
+            print(f" - {error}")
+        raise SystemExit(1)
+
+    print("Website validation passed.")
+
+if __name__ == "__main__":
+    main()
