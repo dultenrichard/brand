@@ -339,3 +339,137 @@ input:focus, select:focus, textarea:focus { border-bottom-color:var(--blue); out
   .page-layout, .contact-grid { display:block; padding:20px 0; }
   .detail, .skill-card, .award-artifact { break-inside:avoid; }
 }
+
+
+/* Chronology — used where sequence matters more than cards. */
+.timeline-band {
+  padding: clamp(90px, 11vw, 145px) 0;
+  border-block: 1px solid var(--line);
+  background: var(--paper);
+}
+.timeline-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
+  gap: clamp(55px, 9vw, 130px);
+}
+.timeline-intro {
+  align-self: start;
+  position: sticky;
+  top: calc(var(--header-h) + 34px);
+}
+.timeline-intro h2,
+.record-timeline .section-topline h2 {
+  margin: 0;
+  font: 700 clamp(40px, 5vw, 66px)/.98 var(--sans);
+  letter-spacing: -.055em;
+}
+.timeline-intro > p:not(.section-kicker),
+.timeline-note {
+  max-width: 520px;
+  color: var(--muted);
+  font: 400 16px/1.65 var(--serif);
+}
+.timeline-list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 88px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--blue), var(--line));
+}
+.timeline-list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 48px;
+  padding: 0 0 38px;
+}
+.timeline-list li:last-child { padding-bottom: 0; }
+.timeline-list li::before {
+  content: "";
+  position: absolute;
+  left: 83px;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--paper);
+  background: var(--blue);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--blue);
+}
+.timeline-list time {
+  color: var(--blue);
+  font: 700 11px/1.45 var(--mono);
+  letter-spacing: .03em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.timeline-list strong {
+  display: block;
+  margin-bottom: 5px;
+  font: 700 clamp(20px, 2vw, 27px)/1.15 var(--sans);
+  letter-spacing: -.025em;
+}
+.timeline-list p {
+  margin: 0 0 8px;
+  max-width: 650px;
+  color: var(--muted);
+}
+.timeline-list a {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+}
+.record-timeline {
+  padding-top: clamp(65px, 8vw, 100px);
+  padding-bottom: clamp(65px, 8vw, 100px);
+  border-bottom: 1px solid var(--line);
+}
+.timeline-list-compact {
+  max-width: 920px;
+}
+.timeline-list-compact::before {
+  left: 104px;
+}
+.timeline-list-compact li {
+  grid-template-columns: 80px minmax(0, 1fr);
+}
+.timeline-list-compact li::before {
+  left: 99px;
+}
+
+@media (max-width: 720px) {
+  .timeline-layout {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+  .timeline-intro {
+    position: static;
+  }
+  .timeline-list::before,
+  .timeline-list-compact::before {
+    left: 11px;
+  }
+  .timeline-list li,
+  .timeline-list-compact li {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-left: 34px;
+    padding-bottom: 30px;
+  }
+  .timeline-list li::before,
+  .timeline-list-compact li::before {
+    left: 6px;
+  }
+  .timeline-list time {
+    text-align: left;
+  }
+}
