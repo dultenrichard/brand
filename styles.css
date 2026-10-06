@@ -784,3 +784,21 @@ input:focus, select:focus, textarea:focus { border-bottom-color:var(--blue); out
   .story-year { opacity: 1; transform: none; transition: none; }
   .story-timeline::after { transition: none; }
 }
+
+
+.home-quote-credit {
+  display: block;
+  margin-top: 18px;
+  color: var(--blue);
+  font: 700 11px/1.5 var(--mono);
+  letter-spacing: .04em;
+  text-transform: none;
+}
+.home-quote-credit span {
+  display: block;
+  max-width: 620px;
+  margin-top: 6px;
+  color: var(--quiet);
+  font: 400 12px/1.55 var(--sans);
+  letter-spacing: 0;
+}
