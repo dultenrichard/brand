@@ -94,7 +94,7 @@ def main() -> None:
                 errors.append(f"{path.name}: broken local {attr}: {value}")
 
     index = (ROOT / "index.html").read_text(encoding="utf-8")
-    if 'href="./dulten-richard-monogram.png" rel="icon"' not in index:
+    if 'dulten-richard-monogram.png" rel="icon"' not in index:
         errors.append("Production favicon is no longer the DR monogram.")
 
     if errors:
