@@ -14,5 +14,6 @@ The site covers experience, skills, awards and recognition, supporting sources, 
 - [Awards](https://dultenrichard.github.io/brand/awards.html)
 - [Sources](https://dultenrichard.github.io/brand/sources.html)
 - [Contact](https://dultenrichard.github.io/brand/contact.html)
+- [Privacy & data](https://dultenrichard.github.io/brand/privacy.html)
 
 Development happens on `dev`; `main` is production.
