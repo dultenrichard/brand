@@ -1,15 +1,41 @@
 "use strict";
 
-const PROFILE_PHOTO = "./dulten-fromentin-profile.webp";
+const UMAMI_SRC = "https://cloud.umami.is/script.js";
+const UMAMI_WEBSITE_ID = "83a9f356-ddca-4004-a55c-96f06d9a6b14";
+const pendingAnalyticsEvents = [];
 
-document.querySelectorAll('.floating-header .brand img[src$="dulten-richard-monogram.png"]').forEach((img) => {
-  img.src = PROFILE_PHOTO;
-  img.alt = "";
-});
-const heroIdentityImage = document.querySelector(".hero-monogram");
-if (heroIdentityImage) {
-  heroIdentityImage.src = PROFILE_PHOTO;
-  heroIdentityImage.alt = "Portrait of Dulten Fromentin";
+function storedAnalyticsPreference() {
+  try {
+    return localStorage.getItem("privacy-analytics");
+  } catch {
+    return null;
+  }
+}
+
+function analyticsAllowed() {
+  if (navigator.globalPrivacyControl === true) return false;
+  if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return false;
+  return storedAnalyticsPreference() !== "off";
+}
+
+function flushAnalyticsEvents() {
+  if (!analyticsAllowed() || !window.umami?.track) return;
+  while (pendingAnalyticsEvents.length) {
+    const [name, payload] = pendingAnalyticsEvents.shift();
+    window.umami.track(name, payload);
+  }
+}
+
+function loadAnalytics() {
+  if (!analyticsAllowed() || document.querySelector('script[data-website-id="' + UMAMI_WEBSITE_ID + '"]')) return;
+  const script = document.createElement("script");
+  script.defer = true;
+  script.src = UMAMI_SRC;
+  script.dataset.websiteId = UMAMI_WEBSITE_ID;
+  script.dataset.domains = "dultenrichard.github.io";
+  script.dataset.excludeSearch = "true";
+  script.addEventListener("load", flushAnalyticsEvents, { once: true });
+  document.head.append(script);
 }
 
 const safeCampaignContext = (() => {
@@ -24,20 +50,78 @@ const safeCampaignContext = (() => {
 })();
 
 function trackEvent(name, data = {}) {
+  if (!analyticsAllowed()) return;
   const payload = { ...safeCampaignContext, ...data };
   if (window.umami && typeof window.umami.track === "function") {
     window.umami.track(name, payload);
+  } else {
+    pendingAnalyticsEvents.push([name, payload]);
   }
-  window.dispatchEvent(
-    new CustomEvent("site:analytics", { detail: { name, data: payload } }),
-  );
 }
+
+loadAnalytics();
 
 function compactLabel(value) {
   return String(value || "").replace(/\s+/g, " ").trim().slice(0, 100);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
+    );
+    document
+      .querySelectorAll(".entry, .interest, .detail, .skill-card, .card, .award-artifact, .contact-grid > section")
+      .forEach((element) => {
+        element.classList.add("reveal-item");
+        revealObserver.observe(element);
+      });
+  }
+
+  const privacyStatus = document.getElementById("privacy-analytics-status");
+  const disableAnalytics = document.getElementById("privacy-disable-analytics");
+  const enableAnalytics = document.getElementById("privacy-enable-analytics");
+
+  function updatePrivacyStatus() {
+    if (!privacyStatus) return;
+    if (navigator.globalPrivacyControl === true) {
+      privacyStatus.textContent = "Analytics off — Global Privacy Control is enabled.";
+    } else if (navigator.doNotTrack === "1" || window.doNotTrack === "1") {
+      privacyStatus.textContent = "Analytics off — Do Not Track is enabled.";
+    } else {
+      privacyStatus.textContent = analyticsAllowed()
+        ? "Analytics enabled for this browser."
+        : "Analytics disabled for this browser.";
+    }
+  }
+
+  disableAnalytics?.addEventListener("click", () => {
+    try { localStorage.setItem("privacy-analytics", "off"); } catch {}
+    pendingAnalyticsEvents.length = 0;
+    updatePrivacyStatus();
+  });
+
+  enableAnalytics?.addEventListener("click", () => {
+    if (navigator.globalPrivacyControl === true || navigator.doNotTrack === "1" || window.doNotTrack === "1") {
+      updatePrivacyStatus();
+      return;
+    }
+    try { localStorage.setItem("privacy-analytics", "on"); } catch {}
+    loadAnalytics();
+    updatePrivacyStatus();
+  });
+
+  updatePrivacyStatus();
+
   trackEvent("page_loaded", { page: window.location.pathname });
 
   if (window.location.pathname.endsWith("/contact.html")) {

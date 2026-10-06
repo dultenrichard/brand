@@ -12,6 +12,10 @@ REQUIRED = [
     "awards.html",
     "sources.html",
     "contact.html",
+    "privacy.html",
+    "robots.txt",
+    "sitemap.xml",
+    ".gitignore",
     "styles.css",
     "site.js",
     "dulten-richard-monogram.png",
@@ -54,6 +58,17 @@ def main() -> None:
             errors.append(f"Merge-conflict marker found in {path.name}")
         if "</html>" not in text.lower():
             errors.append(f"Missing </html> in {path.name}")
+        if "<title>" not in text.lower():
+            errors.append(f"Missing <title> in {path.name}")
+        if path.name != "404.html":
+            if 'name="description"' not in text:
+                errors.append(f"Missing meta description in {path.name}")
+            if 'rel="canonical"' not in text:
+                errors.append(f"Missing canonical URL in {path.name}")
+        if 'href="./privacy.html"' not in text:
+            errors.append(f"Missing privacy link in {path.name}")
+        if "cloud.umami.is/script.js" in text:
+            errors.append(f"Direct analytics loader found in {path.name}; analytics must respect privacy controls in site.js")
 
         parser = LinkParser()
         parser.feed(text)
