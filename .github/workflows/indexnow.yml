@@ -29,12 +29,12 @@ jobs:
               "keyLocation": "https://dultenrichard.github.io/brand/'"$INDEXNOW_KEY"'.txt",
               "urlList": [
                 "https://dultenrichard.github.io/brand/",
-                "https://dultenrichard.github.io/brand/experience.html",
-                "https://dultenrichard.github.io/brand/skills.html",
-                "https://dultenrichard.github.io/brand/awards.html",
-                "https://dultenrichard.github.io/brand/sources.html",
-                "https://dultenrichard.github.io/brand/contact.html",
-                "https://dultenrichard.github.io/brand/privacy.html",
+                "https://dultenrichard.github.io/brand/experience/",
+                "https://dultenrichard.github.io/brand/skills/",
+                "https://dultenrichard.github.io/brand/awards/",
+                "https://dultenrichard.github.io/brand/sources/",
+                "https://dultenrichard.github.io/brand/contact/",
+                "https://dultenrichard.github.io/brand/privacy/",
                 "https://dultenrichard.github.io/brand/sitemap.xml"
               ]
             }'             https://api.indexnow.org/indexnow

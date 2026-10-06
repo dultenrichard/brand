@@ -7,12 +7,12 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
     "index.html",
-    "experience.html",
-    "skills.html",
-    "awards.html",
-    "sources.html",
-    "contact.html",
-    "privacy.html",
+    "experience/index.html",
+    "skills/index.html",
+    "awards/index.html",
+    "sources/index.html",
+    "contact/index.html",
+    "privacy/index.html",
     "robots.txt",
     "sitemap.xml",
     ".gitignore",
@@ -43,7 +43,15 @@ def local_target(page: Path, value: str) -> Path | None:
     raw_path = parts.path
     if not raw_path:
         return None
-    return (page.parent / raw_path).resolve()
+    if raw_path.startswith("/brand/"):
+        candidate = (ROOT / raw_path.removeprefix("/brand/")).resolve()
+    elif raw_path == "/brand/":
+        candidate = ROOT.resolve()
+    else:
+        candidate = (page.parent / raw_path).resolve()
+    if candidate.is_dir():
+        return candidate / "index.html"
+    return candidate
 
 def main() -> None:
     errors: list[str] = []
@@ -52,7 +60,7 @@ def main() -> None:
         if not (ROOT / relative).exists():
             errors.append(f"Missing required file: {relative}")
 
-    for path in ROOT.glob("*.html"):
+    for path in ROOT.rglob("*.html"):
         text = path.read_text(encoding="utf-8")
         if any(marker in text for marker in ("<<<<<<<", "=======", ">>>>>>>")):
             errors.append(f"Merge-conflict marker found in {path.name}")
@@ -60,15 +68,16 @@ def main() -> None:
             errors.append(f"Missing </html> in {path.name}")
         if "<title>" not in text.lower():
             errors.append(f"Missing <title> in {path.name}")
-        if path.name != "404.html":
+        legacy_redirect = "data-legacy-redirect" in text
+        if not legacy_redirect and path.name != "404.html":
             if 'name="description"' not in text:
-                errors.append(f"Missing meta description in {path.name}")
+                errors.append(f"Missing meta description in {path.relative_to(ROOT)}")
             if 'rel="canonical"' not in text:
-                errors.append(f"Missing canonical URL in {path.name}")
-        if 'href="./privacy.html"' not in text:
-            errors.append(f"Missing privacy link in {path.name}")
+                errors.append(f"Missing canonical URL in {path.relative_to(ROOT)}")
+            if "/brand/privacy/" not in text:
+                errors.append(f"Missing privacy link in {path.relative_to(ROOT)}")
         if "cloud.umami.is/script.js" in text:
-            errors.append(f"Direct analytics loader found in {path.name}; analytics must respect privacy controls in site.js")
+            errors.append(f"Direct analytics loader found in {path.relative_to(ROOT)}; analytics must respect privacy controls in site.js")
 
         parser = LinkParser()
         parser.feed(text)
@@ -85,7 +94,7 @@ def main() -> None:
                 errors.append(f"{path.name}: broken local {attr}: {value}")
 
     index = (ROOT / "index.html").read_text(encoding="utf-8")
-    if 'href="./dulten-richard-monogram.png" rel="icon"' not in index:
+    if 'dulten-richard-monogram.png" rel="icon"' not in index:
         errors.append("Production favicon is no longer the DR monogram.")
 
     if errors:
