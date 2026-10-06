@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
     );
     document
-      .querySelectorAll(".entry, .interest, .detail, .skill-card, .card, .award-artifact, .contact-grid > section")
+      .querySelectorAll(".detail, .skill-card, .card, .award-artifact, .feature-row, .recognition-list li, .interest-lines > div, .section-copy")
       .forEach((element) => {
         element.classList.add("reveal-item");
         revealObserver.observe(element);
@@ -411,7 +411,7 @@ if (awardGallery) {
       ? url.href
       : null;
   };
-  fetch("./data/awards.json")
+  fetch("/brand/data/awards.json")
     .then((response) => {
       if (!response.ok) throw new Error("Collection unavailable");
       return response.json();
@@ -512,6 +512,7 @@ if (floatingHeader) {
   let scrollQueued = false;
   function updateHeader() {
     const current = Math.max(0, window.scrollY);
+    floatingHeader.classList.toggle("is-scrolled", current > 20);
     const delta = current - previousScroll;
     const interacting =
       floatingHeader.contains(document.activeElement) ||
