@@ -411,7 +411,7 @@ if (awardGallery) {
       ? url.href
       : null;
   };
-  fetch("/brand/data/awards.json")
+  fetch("/data/awards.json")
     .then((response) => {
       if (!response.ok) throw new Error("Collection unavailable");
       return response.json();
@@ -538,3 +538,55 @@ if (floatingHeader) {
     floatingHeader.classList.remove("header-hidden"),
   );
 }
+
+
+// Animated vertical record timeline.
+(() => {
+  const timeline = document.querySelector("[data-story-timeline]");
+  if (!timeline) return;
+  const items = [...timeline.querySelectorAll(".story-year")];
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    items.forEach((item) => item.classList.add("is-visible"));
+  } else {
+    const reveal = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        reveal.unobserve(entry.target);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    items.forEach((item) => reveal.observe(item));
+  }
+
+  if ("IntersectionObserver" in window) {
+    const active = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a,b) => Math.abs(a.boundingClientRect.top - window.innerHeight * .42) - Math.abs(b.boundingClientRect.top - window.innerHeight * .42));
+      if (!visible.length) return;
+      items.forEach((item) => item.classList.remove("is-active"));
+      visible[0].target.classList.add("is-active");
+    }, { threshold: [0.25,0.55], rootMargin: "-28% 0px -48% 0px" });
+    items.forEach((item) => active.observe(item));
+  }
+
+  let queued = false;
+  const updateProgress = () => {
+    const rect = timeline.getBoundingClientRect();
+    const viewportAnchor = window.innerHeight * .48;
+    const span = Math.max(1, rect.height - 60);
+    const travelled = Math.min(span, Math.max(0, viewportAnchor - rect.top));
+    timeline.style.setProperty("--timeline-progress", (travelled / span).toFixed(4));
+    queued = false;
+  };
+  const queueProgress = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(updateProgress);
+  };
+  window.addEventListener("scroll", queueProgress, { passive: true });
+  window.addEventListener("resize", queueProgress);
+  updateProgress();
+})();

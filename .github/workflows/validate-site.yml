@@ -2,7 +2,7 @@ name: Validate website
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   push:
     branches: [dev]
 

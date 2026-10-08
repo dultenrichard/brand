@@ -26,15 +26,15 @@ jobs:
           curl --fail-with-body --retry 3 --retry-delay 10             -H "Content-Type: application/json; charset=utf-8"             -d '{
               "host": "dultenrichard.github.io",
               "key": "'"$INDEXNOW_KEY"'",
-              "keyLocation": "https://dultenrichard.github.io/brand/'"$INDEXNOW_KEY"'.txt",
+              "keyLocation": "https://dultenrichard.github.io/'"$INDEXNOW_KEY"'.txt",
               "urlList": [
-                "https://dultenrichard.github.io/brand/",
-                "https://dultenrichard.github.io/brand/experience/",
-                "https://dultenrichard.github.io/brand/skills/",
-                "https://dultenrichard.github.io/brand/awards/",
-                "https://dultenrichard.github.io/brand/sources/",
-                "https://dultenrichard.github.io/brand/contact/",
-                "https://dultenrichard.github.io/brand/privacy/",
-                "https://dultenrichard.github.io/brand/sitemap.xml"
+                "https://dultenrichard.github.io/",
+                "https://dultenrichard.github.io/experience/",
+                "https://dultenrichard.github.io/skills/",
+                "https://dultenrichard.github.io/awards/",
+                "https://dultenrichard.github.io/sources/",
+                "https://dultenrichard.github.io/contact/",
+                "https://dultenrichard.github.io/privacy/",
+                "https://dultenrichard.github.io/sitemap.xml"
               ]
             }'             https://api.indexnow.org/indexnow
