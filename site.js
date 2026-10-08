@@ -411,7 +411,7 @@ if (awardGallery) {
       ? url.href
       : null;
   };
-  fetch("/brand/data/awards.json")
+  fetch("/data/awards.json")
     .then((response) => {
       if (!response.ok) throw new Error("Collection unavailable");
       return response.json();

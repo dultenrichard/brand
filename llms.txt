@@ -1,16 +1,16 @@
 # Dulten Richard Fromentin
 
-Official personal website: https://dultenrichard.github.io/brand/
+Official personal website: https://dultenrichard.github.io/
 
 I am Dulten Richard Fromentin, an Ontario, Canada student. My public profile covers cadet leadership and instruction, employment and customer service, community involvement, academic and practical learning, sport, and personal projects.
 
 ## Primary pages
-- About: https://dultenrichard.github.io/brand/
-- Experience: https://dultenrichard.github.io/brand/experience.html
-- Skills: https://dultenrichard.github.io/brand/skills.html
-- Awards and recognition: https://dultenrichard.github.io/brand/awards.html
-- Sources and supporting records: https://dultenrichard.github.io/brand/sources.html
-- Contact: https://dultenrichard.github.io/brand/contact.html
+- About: https://dultenrichard.github.io/
+- Experience: https://dultenrichard.github.io/experience.html
+- Skills: https://dultenrichard.github.io/skills.html
+- Awards and recognition: https://dultenrichard.github.io/awards.html
+- Sources and supporting records: https://dultenrichard.github.io/sources.html
+- Contact: https://dultenrichard.github.io/contact.html
 
 ## Public identity
 - LinkedIn: https://ca.linkedin.com/in/dultenrpfromentin
