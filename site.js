@@ -405,7 +405,7 @@ const awardGallery = document.getElementById("award-gallery");
 if (awardGallery) {
   const localAsset = (value) => {
     if (typeof value !== "string" || !value.trim()) return null;
-    const url = new URL(value, location.href);
+    const url = new URL(value.startsWith("/") ? "https://raw.githack.com/dultenrichard/brand/preview-pull-7/" + value.slice(1) : value, location.href);
     return url.origin === location.origin &&
       /\.(png|jpe?g|webp|pdf)$/i.test(url.pathname)
       ? url.href
