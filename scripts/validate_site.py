@@ -43,13 +43,11 @@ def local_target(page: Path, value: str) -> Path | None:
     raw_path = parts.path
     if not raw_path:
         return None
-    if raw_path.startswith("/brand/"):
-        candidate = (ROOT / raw_path.removeprefix("/brand/")).resolve()
-    elif raw_path == "/brand/":
-        candidate = ROOT.resolve()
+    if raw_path.startswith("/"):
+        candidate = (ROOT / raw_path.removeprefix("/")).resolve()
     else:
         candidate = (page.parent / raw_path).resolve()
-    if candidate.is_dir():
+    if raw_path.endswith("/") or candidate.is_dir():
         return candidate / "index.html"
     return candidate
 
@@ -68,13 +66,17 @@ def main() -> None:
             errors.append(f"Missing </html> in {path.name}")
         if "<title>" not in text.lower():
             errors.append(f"Missing <title> in {path.name}")
+        if "dultenrichard.github.iohttps://" in text or "raw.githack.com/dultenrichardhttps://" in text:
+            errors.append(f"Malformed URL in {path.relative_to(ROOT)}")
+        if any(f'{attr}="/brand/' in text or f"{attr}='/brand/" in text for attr in ("href", "src")):
+            errors.append(f"Unmigrated local project URL in {path.relative_to(ROOT)}")
         legacy_redirect = "data-legacy-redirect" in text
         if not legacy_redirect and path.name != "404.html":
             if 'name="description"' not in text:
                 errors.append(f"Missing meta description in {path.relative_to(ROOT)}")
             if 'rel="canonical"' not in text:
                 errors.append(f"Missing canonical URL in {path.relative_to(ROOT)}")
-            if "/brand/privacy/" not in text:
+            if "/privacy/" not in text:
                 errors.append(f"Missing privacy link in {path.relative_to(ROOT)}")
         if "cloud.umami.is/script.js" in text:
             errors.append(f"Direct analytics loader found in {path.relative_to(ROOT)}; analytics must respect privacy controls in site.js")

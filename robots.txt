@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dultenrichard.github.io/brand/sitemap.xml
+Sitemap: https://dultenrichard.github.io/sitemap.xml
