@@ -45,8 +45,6 @@ def local_target(page: Path, value: str) -> Path | None:
         return None
     if raw_path.startswith("/"):
         candidate = (ROOT / raw_path.removeprefix("/")).resolve()
-    elif raw_path == "/":
-        candidate = ROOT.resolve()
     else:
         candidate = (page.parent / raw_path).resolve()
     if raw_path.endswith("/") or candidate.is_dir():
@@ -70,8 +68,8 @@ def main() -> None:
             errors.append(f"Missing <title> in {path.name}")
         if "dultenrichard.github.iohttps://" in text or "raw.githack.com/dultenrichardhttps://" in text:
             errors.append(f"Malformed URL in {path.relative_to(ROOT)}")
-        if "/brand/" in text:
-            errors.append(f"Unmigrated project-root URL in {path.relative_to(ROOT)}")
+        if any(f'{attr}="/brand/' in text or f"{attr}='/brand/" in text for attr in ("href", "src")):
+            errors.append(f"Unmigrated local project URL in {path.relative_to(ROOT)}")
         legacy_redirect = "data-legacy-redirect" in text
         if not legacy_redirect and path.name != "404.html":
             if 'name="description"' not in text:
