@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+PREVIEW_PREFIX = "https://raw.githack.com/dultenrichard/brand/preview-pull-7/"
 REQUIRED = [
     "index.html",
     "experience/index.html",
@@ -37,19 +38,25 @@ class LinkParser(HTMLParser):
 def local_target(page: Path, value: str) -> Path | None:
     if value.startswith(("#", "mailto:", "tel:", "data:", "javascript:")):
         return None
+    if value.startswith(PREVIEW_PREFIX):
+        preview_path = urlsplit(value).path.removeprefix("/dultenrichard/brand/preview-pull-7/")
+        candidate = (ROOT / preview_path).resolve()
+        if preview_path.endswith("/") or candidate.is_dir():
+            return candidate / "index.html"
+        return candidate
     parts = urlsplit(value)
     if parts.scheme or parts.netloc:
         return None
     raw_path = parts.path
     if not raw_path:
         return None
-    if raw_path.startswith("/brand/"):
-        candidate = (ROOT / raw_path.removeprefix("/brand/")).resolve()
-    elif raw_path == "/brand/":
+    if raw_path.startswith("/"):
+        candidate = (ROOT / raw_path.removeprefix("/")).resolve()
+    elif raw_path == "/":
         candidate = ROOT.resolve()
     else:
         candidate = (page.parent / raw_path).resolve()
-    if candidate.is_dir():
+    if raw_path.endswith("/") or candidate.is_dir():
         return candidate / "index.html"
     return candidate
 
@@ -68,13 +75,17 @@ def main() -> None:
             errors.append(f"Missing </html> in {path.name}")
         if "<title>" not in text.lower():
             errors.append(f"Missing <title> in {path.name}")
+        if "dultenrichard.github.iohttps://" in text or "raw.githack.com/dultenrichardhttps://" in text:
+            errors.append(f"Malformed URL in {path.relative_to(ROOT)}")
+        if 'href="/brand/' in text or 'src="/brand/' in text:
+            errors.append(f"Unmigrated local project URL in {path.relative_to(ROOT)}")
         legacy_redirect = "data-legacy-redirect" in text
         if not legacy_redirect and path.name != "404.html":
             if 'name="description"' not in text:
                 errors.append(f"Missing meta description in {path.relative_to(ROOT)}")
             if 'rel="canonical"' not in text:
                 errors.append(f"Missing canonical URL in {path.relative_to(ROOT)}")
-            if "/brand/privacy/" not in text:
+            if "/privacy/" not in text:
                 errors.append(f"Missing privacy link in {path.relative_to(ROOT)}")
         if "cloud.umami.is/script.js" in text:
             errors.append(f"Direct analytics loader found in {path.relative_to(ROOT)}; analytics must respect privacy controls in site.js")

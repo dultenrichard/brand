@@ -2,18 +2,22 @@
 
 Personal website and public portfolio for Dulten Richard Fromentin.
 
-**Live site:** https://dultenrichard.github.io/brand/
+**Target root site (migration staged; not deployed):** https://dultenrichard.github.io/
+
+The `/brand/` GitHub Pages project URL remains live until the hosting migration is completed.
 
 The site covers experience, skills, awards and recognition, supporting sources, and contact information.
 
 ## Website sections
 
-- [About](https://dultenrichard.github.io/brand/)
-- [Experience](https://dultenrichard.github.io/brand/experience/)
-- [Skills](https://dultenrichard.github.io/brand/skills/)
-- [Awards](https://dultenrichard.github.io/brand/awards/)
-- [Sources](https://dultenrichard.github.io/brand/sources/)
-- [Contact](https://dultenrichard.github.io/brand/contact/)
-- [Privacy & data](https://dultenrichard.github.io/brand/privacy/)
+- [About](https://dultenrichard.github.io/)
+- [Experience](https://dultenrichard.github.io/experience/)
+- [Skills](https://dultenrichard.github.io/skills/)
+- [Awards](https://dultenrichard.github.io/awards/)
+- [Sources](https://dultenrichard.github.io/sources/)
+- [Contact](https://dultenrichard.github.io/contact/)
+- [Privacy & data](https://dultenrichard.github.io/privacy/)
 
 Development happens on `dev`; `main` is production.
+
+**Preview-only build:** [Preview 7](https://raw.githack.com/dultenrichard/brand/preview-pull-7/index.html) is served with explicit file routes and noindex metadata. The planned root URL is not yet live.
