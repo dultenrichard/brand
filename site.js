@@ -597,3 +597,45 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
   document.documentElement.classList.add("motion-ready");
   setTimeout(() => document.querySelectorAll(".reveal-item").forEach(el => el.classList.add("is-visible")), 1800);
 }
+
+// The archive is a readable list without JavaScript; enhance it into keyboard tabs.
+(() => {
+  const archive = document.querySelector('.archive-section');
+  if (!archive) return;
+  const tabs = [...archive.querySelectorAll('[data-record-tab]')];
+  const panels = [...archive.querySelectorAll('[data-record-panel]')];
+  const tablist = archive.querySelector('.record-tabs');
+  tablist.setAttribute('role', 'tablist');
+  function selectYear(year, focus = false) {
+    tabs.forEach(tab => {
+      const selected = tab.dataset.recordTab === year;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      if (selected && focus) tab.focus();
+    });
+    panels.forEach(panel => { panel.hidden = panel.dataset.recordPanel !== year; });
+  }
+  tabs.forEach((tab, i) => {
+    const year = tab.dataset.recordTab;
+    tab.id = 'year-tab-' + year;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', 'record-' + year);
+    const panel = panels.find(panel => panel.dataset.recordPanel === year);
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', tab.id);
+    panel.tabIndex = 0;
+    tab.addEventListener('click', () => selectYear(year));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight') next = (i + 1) % tabs.length;
+      if (event.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = tabs.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      selectYear(tabs[next].dataset.recordTab, true);
+    });
+  });
+  selectYear('2026');
+  archive.classList.add('archive-enhanced');
+})();
