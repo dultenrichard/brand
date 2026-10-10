@@ -19,3 +19,9 @@ Shared reviewed JSON generates 18 pages and an 80-entry search index. Search, re
 ## Verification limits
 
 Source structure, internal links, JavaScript syntax, CSS parsing, and DOM interaction checks have passed. PDF pages were rendered and inspected. A supported browser-control skill is unavailable, so rendered website appearance, native focus behavior, and measured mobile performance have not been browser-verified. Responsive CSS is implemented, not represented as a measured browser result.
+
+## Workshop playbook / Navigation transition
+
+The youth leadership business project now uses an original vector tactical board (`assets/images/workshop-playbook.svg`). Four numbered movement points and a shared field of play correspond to Listen → Decide → Act → Reflect. The homepage teaser and the Projects page share the same identity; phase controls on the project page describe a *proposed* activity, not a completed pilot. No stock team photograph or implied endorsement of a youth sports organization is used.
+
+For normal navigation the site displays immediately. A non-blocking progressive enhancement shows the editorial branded transition only when a user-initiated internal document navigation is still pending after 450 ms. It avoids download, off-site, modified-click and hash-only links. The pagehide/pageshow handlers, Escape key, Stay button and 8-second safety limit ensure the old page does not remain covered if navigation is cancelled or blocked. Reduced-motion preferences disable the moving progress line.

@@ -195,4 +195,80 @@
     const a = event.target.closest('a'); if (!a)return;
     if (a.getAttribute('href')?.endsWith('.pdf'))track('document_download', { document:'experience_profile' });
   });
+
+  // The playbook is a lesson-design illustration, not a claim that a pilot has taken place.
+  const board = $('.youth-leadership-workshops-detail .project-visual');
+  if (board) {
+    const phases = [
+      { label: 'Listen', title: 'Hear the team first.', text: 'Start with the team’s objective. Make space for every voice before deciding what to do.' },
+      { label: 'Decide', title: 'Make a plan together.', text: 'In the proposed ad activity, small groups have five minutes to agree on an idea, roles, and a 30-second pitch.' },
+      { label: 'Act', title: 'Step into the uncomfortable.', text: 'Groups present their short ad. It is practice in communicating clearly and backing a shared decision.' },
+      { label: 'Reflect', title: 'Learn from what happened.', text: 'Discuss what worked, who participated, and what the group would change on its next attempt.' }
+    ];
+    const flow = document.createElement('section');
+    flow.className = 'workshop-flow';
+    flow.setAttribute('aria-label', 'Workshop learning cycle');
+    flow.innerHTML = '<div class="workshop-flow-heading"><p>Inside the proposed workshop</p><span>Four movements / One team</span></div>' +
+      '<div class="workshop-phases" role="group" aria-label="Explore a workshop phase"></div>' +
+      '<div class="workshop-phase-copy" aria-live="polite"><strong></strong><p></p></div>';
+    const controls = $('.workshop-phases', flow);
+    const phaseTitle = $('.workshop-phase-copy strong', flow);
+    const phaseText = $('.workshop-phase-copy p', flow);
+    const renderPhase = index => {
+      const phase = phases[index];
+      phaseTitle.textContent = phase.title;
+      phaseText.textContent = phase.text;
+      $('button', controls).forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+    };
+    phases.forEach((phase, i) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.innerHTML = '<small>0' + (i + 1) + '</small>' + phase.label;
+      button.setAttribute('aria-pressed', String(i === 0));
+      button.addEventListener('click', () => renderPhase(i));
+      controls.append(button);
+    });
+    renderPhase(0);
+    board.append(flow);
+  }
+
+  // Navigation stays instantaneous when pages are fast. Show an overlay only if a same-site
+  // document navigation has genuinely taken more than 450ms. Do not intercept normal links.
+  const slowNav = document.createElement('div');
+  slowNav.className = 'slow-navigation';
+  slowNav.hidden = true;
+  slowNav.setAttribute('role', 'status');
+  slowNav.setAttribute('aria-live', 'polite');
+  slowNav.innerHTML = '<div class="slow-navigation-inner">' +
+    '<span class="slow-navigation-brand">Dulten <em>Richard.</em></span>' +
+    '<p class="slow-navigation-copy">Opening the next page…</p>' +
+    '<div class="slow-navigation-track" aria-hidden="true"></div>' +
+    '<button type="button">Stay on this page</button>' +
+    '</div>';
+  document.body.append(slowNav);
+  let slowNavTimer = 0;
+  let slowNavGuard = 0;
+  const dismissSlowNav = () => {
+    clearTimeout(slowNavTimer);
+    clearTimeout(slowNavGuard);
+    slowNav.hidden = true;
+  };
+  $('button', slowNav).addEventListener('click', dismissSlowNav);
+  addEventListener('pagehide', dismissSlowNav);
+  addEventListener('pageshow', dismissSlowNav);
+  addEventListener('keydown', event => { if (event.key === 'Escape' && !slowNav.hidden) dismissSlowNav(); });
+  document.addEventListener('click', event => {
+    const a = event.target.closest('a[href]');
+    if (!a || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+      a.hasAttribute('download') || (a.target && a.target !== '_self')) return;
+    let next;
+    try { next = new URL(a.href, location.href); } catch { return; }
+    if (next.origin !== location.origin || next.protocol !== location.protocol ||
+      (next.pathname === location.pathname && next.search === location.search)) return;
+    dismissSlowNav();
+    slowNavTimer = setTimeout(() => { slowNav.hidden = false; }, 450);
+    // A failed or cancelled navigation must never leave the existing page covered.
+    slowNavGuard = setTimeout(dismissSlowNav, 8000);
+  });
+
 })();
