@@ -54,3 +54,12 @@ Homepage; shared editorial stylesheet and JavaScript; primary experience/skills/
 ## Quiet personal revision
 
 The homepage now begins with only the name, location, and authentic portrait. A short personal note follows, then three links into the full record. Plain secondary headings, a native More menu, self-hosted Newsreader, and a projects page replace the campaign-like structure. See [DESIGN-RESEARCH.md](DESIGN-RESEARCH.md) for research, source boundaries, and validation limitations. Private preview: https://dulten-editorial-review.dulten.chatgpt.site/?revision=3 .
+
+
+## Signature and document revision
+
+A new asymmetric signature opening displays Dulten Richard with Fromentin beneath, a split dark/paper background, authentic portrait, and restrained line art. The homepage links into an award ledger and records directory beside a dedicated Equinox illustration. The line-art boat is decorative, not a technical drawing of the Edel 665. Experience uses a compact progression grid; awards use a two-column ledger; supporting records use a document layout. The old award timeline is hidden visually to avoid duplicating the ledger; all recognition remains in the full award record.
+
+The experience profile is a designed three-page PDF at assets/documents/Dulten-Richard-Fromentin-Experience.pdf, linked directly from Experience and Sources. Its three pages were rendered and visually inspected. Regenerate using scripts/build_experience_pdf.py with ReportLab and pypdf installed. Its web links point to the current private review; regenerate those links for the final public host before production publication.
+
+Supporting records now explicitly state that Dulten keeps a copy or proof of every award, as confirmed by him. No private evidence documents were published. Mock-trial recognition has been corrected to April 2025, Grade 10 at PECI; old 2026 fragments route to the corrected year record. Private review: https://dulten-editorial-review.dulten.chatgpt.site/?revision=4 .
