@@ -476,6 +476,71 @@
       if(Math.abs(delta)>65)setSpotlight(active+(delta<0?1:-1));
     },{passive:true});
     setSpotlight(0);
+
+    // Subtle chartlike light field. Canvas is decoration; all content exists in HTML.
+    const canvas=document.createElement('canvas');
+    canvas.className='spotlight-canvas';
+    canvas.setAttribute('aria-hidden','true');
+    spotlight.prepend(canvas);
+    const context=canvas.getContext('2d');
+    if(context){
+      let width=1,height=1,ratio=1,raf=0,onscreen=true,last=0,phase=0;
+      const fit=()=>{
+        const rect=spotlight.getBoundingClientRect();
+        width=Math.max(1,Math.round(rect.width));
+        height=Math.max(1,Math.round(rect.height));
+        ratio=Math.min(devicePixelRatio||1,1.5);
+        canvas.width=Math.round(width*ratio);
+        canvas.height=Math.round(height*ratio);
+        context.setTransform(ratio,0,0,ratio,0,0);
+        draw(phase);
+      };
+      const draw=(t)=>{
+        context.clearRect(0,0,width,height);
+        const focusX=width*(.7-active*.07),focusY=height*.52;
+        const spread=Math.min(width,height)*.35;
+        const light=context.createRadialGradient(focusX,focusY,2,focusX,focusY,spread);
+        light.addColorStop(0,['rgba(225,210,168,.095)','rgba(175,220,212,.10)','rgba(189,199,235,.10)'][active]);
+        light.addColorStop(1,'rgba(220,230,226,0)');
+        context.fillStyle=light;context.fillRect(0,0,width,height);
+        for(let n=0;n<14;n++){
+          const y=height*(.12+n*.057);
+          context.beginPath();
+          for(let x=0;x<=width+24;x+=24){
+            const wave=Math.sin(x*.006+n*.47+t*.16)*12+Math.cos(x*.0026+n*.85-t*.10)*9;
+            if(x===0)context.moveTo(x,y+wave);else context.lineTo(x,y+wave);
+          }
+          context.lineWidth=.58;
+          context.strokeStyle=n%3===0?'rgba(213,194,153,.13)':'rgba(165,202,197,.095)';
+          context.stroke();
+        }
+        for(let n=0;n<30;n++){
+          const a=n*2.39996+t*.13,rad=Math.sqrt(n/30)*spread*.9;
+          const x=focusX+Math.cos(a)*rad,y=focusY+Math.sin(a)*rad*.62;
+          context.beginPath();context.arc(x,y,n%9===0?1.4:.65,0,Math.PI*2);
+          context.fillStyle=n%5===0?'rgba(235,214,163,.48)':'rgba(201,219,209,.25)';
+          context.fill();
+        }
+      };
+      const frame=(ts)=>{
+        raf=0;
+        if(paused||reduced.matches||document.hidden||!onscreen)return;
+        if(ts-last>=33){last=ts;phase=ts*.001;draw(phase);}
+        raf=requestAnimationFrame(frame);
+      };
+      const resume=()=>{
+        if(paused||reduced.matches||document.hidden||!onscreen){cancelAnimationFrame(raf);raf=0;draw(phase);}
+        else if(!raf)raf=requestAnimationFrame(frame);
+      };
+      if('ResizeObserver' in window)new ResizeObserver(fit).observe(spotlight);
+      else addEventListener('resize',fit,{passive:true});
+      if('IntersectionObserver' in window)new IntersectionObserver(e=>{onscreen=e[0].isIntersecting;resume();}).observe(spotlight);
+      document.addEventListener('visibilitychange',resume);
+      motionButton?.addEventListener('click',()=>requestAnimationFrame(resume));
+      reduced.addEventListener('change',resume);
+      triggers.forEach(btn=>btn.addEventListener('click',()=>draw(phase)));
+      fit();resume();
+    }
   }
 
 })();
