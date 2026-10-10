@@ -218,7 +218,7 @@
       const phase = phases[index];
       phaseTitle.textContent = phase.title;
       phaseText.textContent = phase.text;
-      $('button', controls).forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+      Array.from(controls.querySelectorAll('button')).forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
     };
     phases.forEach((phase, i) => {
       const button = document.createElement('button');
@@ -301,7 +301,7 @@
       '<a href="#projects" aria-label="Projects, chapter four"><small>04</small><span>Projects</span></a>' +
       '<a href="#timeline" aria-label="Timeline, chapter five"><small>05</small><span>Archive</span></a>';
     document.body.append(waypoint);
-    const waypointAnchors = $('a',waypoint);
+    const waypointAnchors = Array.from(waypoint.querySelectorAll('a'));
     const markChapter = (idx) => {
       waypointAnchors.forEach((a,i)=>{
         a.classList.toggle('is-active',i===idx);
