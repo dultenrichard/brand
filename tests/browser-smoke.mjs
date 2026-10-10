@@ -16,6 +16,13 @@ async function visit(name,viewport,url,shot,assertions){
   await page.evaluate(()=>document.fonts.ready);
   await page.waitForTimeout(160);
   try{await assertions(page);}catch(e){failures.push(name+': '+e.message);}
+  // Screenshots must begin at the document top after keyboard/interaction tests.
+  // Otherwise fixed elements appear halfway down a fullPage capture.
+  await page.evaluate(()=>{
+    document.activeElement?.blur?.();
+    window.scrollTo({top:0,behavior:'instant'});
+  });
+  await page.waitForTimeout(180);
   await page.screenshot({path:'artifacts/'+shot,fullPage:true,animations:'disabled'});
   if(errors.length)failures.push(name+': runtime '+errors.join(' / '));
   if(assets.length)failures.push(name+': assets 404 '+assets.join(', '));

@@ -365,3 +365,19 @@ body.home{background:var(--sr-cream);overflow-x:clip}
   .spotlight-panel h3,.spotlight-panel p{color:black!important}
   .home .closing-chapter{background:white!important;color:black!important}
 }
+/* Final mobile layout pass: keep both hero destinations on single lines. */
+@media(max-width:650px){
+  .home .hero-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .home .hero-bottom>a:first-child{
+    display:inline-flex;align-items:center;gap:7px;width:auto!important;min-width:0;
+    flex:0 1 auto;white-space:nowrap;font-size:9px;line-height:1.35;letter-spacing:.04em
+  }
+  .home .hero-bottom>a.hero-linkedin{
+    display:inline-flex;align-items:center;flex:0 0 auto;
+    width:auto!important;min-width:0;white-space:nowrap;
+    font-size:9px;letter-spacing:.025em;line-height:1.35
+  }
+}
+@media(max-width:370px){
+  .home .hero-bottom>a:first-child,.home .hero-bottom>a.hero-linkedin{font-size:8px}
+}
