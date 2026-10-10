@@ -603,3 +603,10 @@ body:not(.home) .page-mast .mast-bottom{margin-top:55px}
 }
 .motion-paused .spotlight-aura,.motion-paused .spotlight-emblem,.motion-paused .spotlight-figure,.motion-paused .spotlight-select,.motion-paused .spotlight-panel{animation:none!important;transition:none!important}
 .motion-paused .spotlight-aura::after{animation:none!important}
+
+/* Glow-map layer: visible behind three-act highlight controls. */
+.spotlight-stage{isolation:isolate}
+.spotlight-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.62;mix-blend-mode:screen}
+.spotlight-grid,.spotlight-bottom,.spotlight-track{position:relative;z-index:2}
+.spotlight-aura{z-index:1;pointer-events:none}
+@media(max-width:700px){.spotlight-canvas{opacity:.3}}
