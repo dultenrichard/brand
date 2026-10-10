@@ -21,6 +21,11 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Verify generated content is current
+        run: |
+          python scripts/build_site.py
+          git diff --exit-code -- "*.html" data/search-index.json data/site-data.js
+
       - name: Validate local site structure
         run: python scripts/validate_site.py
 
