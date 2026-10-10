@@ -271,4 +271,177 @@
     slowNavGuard = setTimeout(dismissSlowNav, 8000);
   });
 
+
+  /* THE CURRENT: a bespoke navigable canvas rather than an ornamental video. */
+  const currentHero = $('.hero');
+  if (currentHero) {
+    document.body.classList.add('cinematic-home');
+    const scenic = document.createElement('canvas');
+    scenic.className = 'current-field';
+    scenic.setAttribute('aria-hidden', 'true');
+    currentHero.insertBefore(scenic, $('.hero-shade'));
+
+    const ornament = document.createElement('div');
+    ornament.className = 'hero-compass';
+    ornament.setAttribute('aria-hidden','true');
+    ornament.innerHTML = '<span class="compass-ring"><i></i><i></i><i></i><i></i></span><span class="compass-label">DR / 2026</span>';
+    currentHero.append(ornament);
+
+    const notation = document.createElement('div');
+    notation.className = 'hero-notation shell';
+    notation.innerHTML = '<span>01 / Personal record</span><span>Scroll to navigate the current <b aria-hidden="true">↓</b></span>';
+    currentHero.append(notation);
+
+    const waypoint = document.createElement('nav');
+    waypoint.className = 'waypoint-nav';
+    waypoint.setAttribute('aria-label','Navigate homepage chapters');
+    waypoint.innerHTML = '<a href="#top" aria-label="Opening, chapter one"><small>01</small><span>Opening</span></a>' +
+      '<a href="#about" aria-label="About, chapter two"><small>02</small><span>About</span></a>' +
+      '<a href="#experience" aria-label="Experience, chapter three"><small>03</small><span>Practice</span></a>' +
+      '<a href="#projects" aria-label="Projects, chapter four"><small>04</small><span>Projects</span></a>' +
+      '<a href="#timeline" aria-label="Timeline, chapter five"><small>05</small><span>Archive</span></a>';
+    document.body.append(waypoint);
+    const waypointAnchors = $('a',waypoint);
+    const markChapter = (idx) => {
+      waypointAnchors.forEach((a,i)=>{
+        a.classList.toggle('is-active',i===idx);
+        if(i===idx) a.setAttribute('aria-current','location');
+        else a.removeAttribute('aria-current');
+      });
+    };
+    markChapter(0);
+    const chapters = [currentHero,$('#about'),$('#experience'),$('#projects'),$('#timeline')].filter(Boolean);
+    if('IntersectionObserver' in window){
+      const chapterObserver=new IntersectionObserver(()=>{
+        let active = 0, near = Infinity;
+        chapters.forEach((el,i)=>{
+          const rect=el.getBoundingClientRect();
+          const distance=Math.abs(rect.top - innerHeight*.35);
+          if(rect.bottom>innerHeight*.2 && distance<near){near=distance;active=i;}
+        });
+        markChapter(active);
+      },{threshold:[0,.15,.4,.75],rootMargin:'-18% 0px -55% 0px'});
+      chapters.forEach(el=>chapterObserver.observe(el));
+    }
+
+    const introBand=document.createElement('section');
+    introBand.className='manifesto-interlude';
+    introBand.setAttribute('aria-label','The work in context');
+    introBand.innerHTML='<div class="manifesto-inner shell">' +
+      '<div class="manifesto-no">03 / A thread through the work</div>' +
+      '<h2>Different ground.<br><em>Same responsibility.</em></h2>' +
+      '<div class="manifesto-row"><span>Cadet instruction since 2021</span><span>205 community hours</span><span>Projects in progress</span></div>' +
+      '</div><div class="manifesto-current" aria-hidden="true"><i></i><i></i><i></i></div>';
+    const workSection=$('.selected-work');
+    if(workSection)workSection.after(introBand);
+
+    // Visible content is still genuine HTML if scripting or animation is unavailable.
+    // The canvas uses deterministic seeded particles and a moving current / chart geometry.
+    const ctx=scenic.getContext('2d',{alpha:true});
+    if(ctx){
+      let width=1,height=1,dpr=1,frame=0,raf=0,last=0,visible=true,now=0;
+      let target={x:.69,y:.48},pointer={x:.69,y:.48},nodes=[];
+      const random = (n)=>{const s=Math.sin(n*127.1+78.233)*43758.5453123;return s-Math.floor(s);};
+      const resize=()=>{
+        const box=currentHero.getBoundingClientRect();
+        width=Math.max(1,Math.floor(box.width));height=Math.max(1,Math.floor(box.height));
+        dpr=Math.min(devicePixelRatio||1,1.75);
+        scenic.width=Math.floor(width*dpr);scenic.height=Math.floor(height*dpr);
+        scenic.style.width=width+'px';scenic.style.height=height+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        const count = width < 680 ? 44 : 100;
+        nodes=Array.from({length:count},(_,i)=>({
+          x:random(i*7.4+1.1), y:random(i*8.7+4.9), z:.25+random(i*5.1+1.9)*.75,
+          phase:random(i*6.5)*Math.PI*2
+        }));
+        paint(now);
+      };
+      const flowY=(x,i,t)=>height*(.18+.64*nodes[i].y)+Math.sin(x*.004+nodes[i].phase+t*(.16+nodes[i].z*.12))*height*.016;
+      const paint=(t)=>{
+        ctx.clearRect(0,0,width,height);
+        ctx.globalCompositeOperation='screen';
+        // Layered luminous drift-lines, like measured currents on a navigation chart.
+        for(let l=0;l<11;l++){
+          const baseline=height*(.17+l*.067);
+          const offset=l*1.4;
+          ctx.beginPath();
+          for(let x=-20;x<=width+28;x+=28){
+            const y=baseline+Math.sin(x*.0045+offset+t*.15)*height*.024+
+              Math.cos(x*.0018+offset*.71-t*.09)*height*.011;
+            if(x===-20)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+          }
+          ctx.strokeStyle=l%3===0?'rgba(215,189,143,.18)':'rgba(137,182,199,.14)';
+          ctx.lineWidth=l%4===0?1.1:.55;ctx.stroke();
+        }
+        pointer.x+=(target.x-pointer.x)*.035;
+        pointer.y+=(target.y-pointer.y)*.035;
+        const cursorX=pointer.x*width,cursorY=pointer.y*height;
+        const aura=ctx.createRadialGradient(cursorX,cursorY,0,cursorX,cursorY,width*.29);
+        aura.addColorStop(0,'rgba(200,197,172,.075)');
+        aura.addColorStop(1,'rgba(200,197,172,0)');
+        ctx.fillStyle=aura;ctx.fillRect(0,0,width,height);
+        for(let i=0;i<nodes.length;i++){
+          const n=nodes[i];
+          let x=((n.x*width+t*(3+n.z*5))%(width+60))-30;
+          let y=flowY(x,i,t);
+          const dist=Math.hypot(x-cursorX,y-cursorY);
+          const brighten=Math.max(0,1-dist/(width*.26));
+          ctx.beginPath();ctx.arc(x,y,.45+n.z*.85+brighten*.65,0,Math.PI*2);
+          ctx.fillStyle=(i%8===0)?'rgba(239,216,171,'+(.24+n.z*.45)+')':'rgba(190,218,222,'+(.10+n.z*.28+brighten*.2)+')';
+          ctx.fill();
+          if(i%7===0){
+            ctx.beginPath();ctx.moveTo(x-19*n.z,y+1);ctx.lineTo(x-3*n.z,y);
+            ctx.strokeStyle='rgba(232,220,200,'+(.06+n.z*.13)+')';ctx.lineWidth=.65;ctx.stroke();
+          }
+        }
+        ctx.globalCompositeOperation='source-over';
+      };
+      const animate=(time)=>{
+        raf=0;if(paused||!visible||document.hidden)return;
+        if(time-last < 32){raf=requestAnimationFrame(animate);return;}
+        last=time;now=time*.001;paint(now);raf=requestAnimationFrame(animate);
+      };
+      const play=()=>{
+        if(paused || !visible || document.hidden){
+          cancelAnimationFrame(raf);raf=0;paint(now);
+        } else if(!raf)raf=requestAnimationFrame(animate);
+      };
+      currentHero.addEventListener('pointermove',event=>{
+        if(event.pointerType==='touch')return;
+        const box=currentHero.getBoundingClientRect();
+        target.x=Math.max(0,Math.min(1,(event.clientX-box.left)/box.width));
+        target.y=Math.max(0,Math.min(1,(event.clientY-box.top)/box.height));
+        currentHero.style.setProperty('--cursor-x',(target.x*100).toFixed(2)+'%');
+        currentHero.style.setProperty('--cursor-y',(target.y*100).toFixed(2)+'%');
+      },{passive:true});
+      currentHero.addEventListener('pointerleave',()=>{
+        target={x:.69,y:.48};
+      });
+      if('IntersectionObserver' in window){
+        const observer=new IntersectionObserver(entries=>{
+          visible=entries[0].isIntersecting;play();
+        },{threshold:0});
+        observer.observe(currentHero);
+      }
+      if('ResizeObserver' in window){
+        const obs=new ResizeObserver(()=>resize());obs.observe(currentHero);
+      } else addEventListener('resize',resize,{passive:true});
+      document.addEventListener('visibilitychange',play);
+      motionButton?.addEventListener('click',()=>requestAnimationFrame(play));
+      reduced.addEventListener('change',()=>requestAnimationFrame(play));
+      resize();play();
+    }
+    // Motions only decorate already-visible information.
+    if('IntersectionObserver' in window){
+      const emerge=new IntersectionObserver((entries,observer)=>{
+        entries.forEach(entry=>{
+          if(!entry.isIntersecting)return;
+          entry.target.classList.add('chapter-seen');observer.unobserve(entry.target);
+        });
+      },{threshold:.12});
+      $('.about-section,.selected-work,.manifesto-interlude,.project-chapter,.quote-chapter,.archive-invite')
+        .forEach(el=>emerge.observe(el));
+    }
+  }
+
 })();
