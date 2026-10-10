@@ -417,3 +417,6 @@ body:not(.home) .page-mast .mast-bottom{margin-top:55px}
   .manifesto-interlude{color:#111!important;background:white!important;min-height:0}
   .home .hero h1 span{color:#111!important;-webkit-text-stroke:0!important}
 }
+
+/* Screenshot review: restore the editorial gutters on full-screen display type. */
+.home .hero-content{width:min(100% - 2*var(--gutter),1360px);margin-inline:auto}
