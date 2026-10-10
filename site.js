@@ -436,8 +436,8 @@
   /* An interactive, three-act narrative — no additional résumé content. */
   const spotlight=$('[data-spotlight]');
   if(spotlight){
-    const triggers=$('[data-spotlight-select]',spotlight);
-    const panels=$('[data-spotlight-panel]',spotlight);
+    const triggers=Array.from(spotlight.querySelectorAll('[data-spotlight-select]'));
+    const panels=Array.from(spotlight.querySelectorAll('[data-spotlight-panel]'));
     const sceneLabels=['LEADERSHIP / 2021—','COMMUNITY / 205 HOURS','DEVELOPMENT / 2025—26'];
     let active=0;
     const setSpotlight=(index,focus=false)=>{
