@@ -420,3 +420,138 @@ body:not(.home) .page-mast .mast-bottom{margin-top:55px}
 
 /* Screenshot review: restore the editorial gutters on full-screen display type. */
 .home .hero-content{width:min(100% - 2*var(--gutter),1360px);margin-inline:auto}
+
+
+/* CURATED EDITION — October 2026
+   Less content, more intentional composition. No project showcase or timeline
+   on the landing page. LinkedIn remains the complete professional record. */
+.home .hero-bottom{display:flex;align-items:center;justify-content:space-between;gap:30px}
+.home .hero-bottom a.hero-linkedin{
+  display:inline-flex;align-items:center;gap:15px;font:500 10px/1.5 var(--sans);
+  letter-spacing:.15em;text-transform:uppercase;text-decoration:none;
+  border-bottom:1px solid #e7ddc266;padding-bottom:7px;color:#f7eee0;
+  transition:border-color .25s ease,color .25s ease
+}
+.home .hero-bottom a.hero-linkedin:hover{color:var(--current-copper);border-color:var(--current-copper)}
+.home .about-section{
+  padding-block:clamp(115px,11vw,180px);
+  border-bottom:1px solid #98a5a238
+}
+.home .about-layout{grid-template-columns:minmax(0,1.35fr) minmax(235px,.65fr);gap:clamp(55px,10vw,160px)}
+.home .about-copy h2{font-size:clamp(49px,5.3vw,86px);line-height:.98;letter-spacing:-.061em;max-width:16ch}
+.home .about-copy h2 em{color:#3b626b;font-weight:400}
+.home .about-copy>p{max-width:56ch;font-size:15px;line-height:1.95;margin-top:40px}
+.home .about-copy .text-link{margin-top:44px;letter-spacing:.055em}
+.signature-highlights{
+  padding-block:clamp(95px,10vw,165px) clamp(120px,12vw,195px);
+  background:#f0eee6
+}
+.signature-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);column-gap:60px;align-items:end;margin-bottom:74px}
+.signature-heading .eyebrow{grid-column:1/-1;color:#45616a;letter-spacing:.21em;margin-bottom:38px}
+.signature-heading h2{font:400 clamp(70px,8vw,125px)/.91 var(--serif);letter-spacing:-.075em}
+.signature-heading h2 em{font-style:italic;color:#345967}
+.signature-heading>p:last-child{font:14px/1.75 var(--sans);color:#54696c;max-width:32ch;justify-self:end;margin-bottom:6px}
+.signature-list{border-top:1px solid #7d9293}
+.signature-item{
+  display:grid;grid-template-columns:75px minmax(0,1fr) 180px;
+  gap:clamp(24px,5vw,75px);align-items:start;
+  padding-block:clamp(35px,5vw,70px);
+  border-bottom:1px solid #a9b5b1;
+  transition:padding-left .48s var(--current-ease),border-color .4s
+}
+.signature-item:hover{padding-left:20px;border-bottom-color:#294955}
+.signature-number{font:10px/1.5 var(--sans);letter-spacing:.24em;color:#61797d;margin-top:11px}
+.signature-item .eyebrow{font-size:10px;letter-spacing:.16em;color:#5c7478;margin-bottom:19px}
+.signature-item h3{font:400 clamp(36px,5vw,76px)/.98 var(--serif);letter-spacing:-.056em;max-width:18ch;margin-bottom:19px}
+.signature-item div>p:last-child{font-size:13px;line-height:1.7;color:#526467;max-width:50ch}
+.signature-end{font:10px/1.6 var(--sans);letter-spacing:.08em;color:#617477;justify-self:end;margin-top:10px;text-align:right}
+.signature-link{
+  display:inline-flex;align-items:center;gap:clamp(40px,7vw,110px);
+  margin-top:60px;padding-block:15px;border-bottom:1px solid #425e65;
+  text-decoration:none;color:#1a3640;font:12px/1.4 var(--sans);letter-spacing:.04em;
+  transition:gap .4s var(--current-ease),color .3s
+}
+.signature-link span{font-size:21px}
+.signature-link:hover{gap:clamp(50px,8vw,125px);color:#467c8b}
+.closing-chapter{
+  position:relative;min-height:74svh;display:flex;align-items:center;
+  background:#101f29;color:#f4f0e8;padding-block:clamp(110px,13vw,200px);
+  isolation:isolate;overflow:hidden
+}
+.closing-chapter::before{
+  content:"";position:absolute;inset:0;z-index:-2;
+  background:linear-gradient(90deg,#101e29f5,#101e2999),url('/assets/images/water-study.webp') center/cover;
+  filter:saturate(.5)
+}
+.closing-chapter::after{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.13;
+  background:url('/assets/images/film-grain.svg') repeat;
+}
+.closing-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(230px,.55fr);gap:clamp(55px,12vw,190px);align-items:end}
+.closing-chapter .eyebrow{color:#ceb995;letter-spacing:.2em;margin-bottom:55px}
+.closing-chapter blockquote p{
+  font:400 clamp(60px,8.3vw,139px)/.94 var(--serif);
+  letter-spacing:-.071em;max-width:12ch
+}
+.closing-chapter blockquote em{color:#d3bb92;font-style:italic}
+.closing-chapter blockquote footer{margin-top:35px;color:#c1cfd1;font-size:11px;letter-spacing:.05em}
+.closing-links{padding-bottom:5px}
+.closing-links p{font:14px/1.9 var(--sans);color:#c7d3d3;margin-bottom:30px;max-width:28ch}
+.closing-links a{
+  display:flex;align-items:center;justify-content:space-between;gap:35px;
+  border-top:1px solid #a9c0c044;padding:17px 0;text-decoration:none;
+  font:12px/1.6 var(--sans);letter-spacing:.045em;transition:color .25s,padding-left .3s
+}
+.closing-links a:last-child{border-bottom:1px solid #a9c0c044}
+.closing-links a span{font-size:19px;color:#d3b989}
+.closing-links a:hover{color:#d3b989;padding-left:8px}
+.home .site-footer{padding-block:65px 25px}
+.home .footer-name{font-size:clamp(52px,5.9vw,88px)}
+.home .footer-nav{margin-top:45px}
+.projects-paused-page .page-mast{min-height:55svh}
+.projects-paused-page .page-crosslink{padding-block:85px 140px}
+@media(max-width:950px){
+  .signature-heading{grid-template-columns:minmax(0,1fr) 200px;gap:35px}
+  .signature-item{grid-template-columns:45px minmax(0,1fr) 116px;gap:23px}
+  .closing-layout{grid-template-columns:1.15fr .7fr;gap:50px}
+  .closing-chapter blockquote p{font-size:clamp(58px,8vw,105px)}
+}
+@media(max-width:700px){
+  .home .hero-bottom{align-items:center}
+  .home .hero-bottom a.hero-linkedin{font-size:9px;white-space:nowrap;letter-spacing:.04em;padding-bottom:3px}
+  .home .about-section{padding-block:90px 110px}
+  .home .about-layout{grid-template-columns:1fr;gap:30px}
+  .home .about-copy h2{font-size:clamp(48px,11vw,72px)}
+  .home .about-section .portrait{max-width:235px;width:60%;margin-right:20px}
+  .signature-highlights{padding-block:105px 130px}
+  .signature-heading{display:block;margin-bottom:52px}
+  .signature-heading h2{font-size:clamp(65px,13vw,88px)}
+  .signature-heading>p:last-child{margin-top:25px;max-width:34ch}
+  .signature-item{grid-template-columns:38px minmax(0,1fr);column-gap:14px;padding-block:43px}
+  .signature-item h3{font-size:clamp(36px,9vw,54px);margin-bottom:16px}
+  .signature-item .eyebrow{font-size:9px}
+  .signature-end{grid-column:2;justify-self:start;margin-top:5px}
+  .signature-link{max-width:100%;font-size:11px;gap:28px;margin-top:45px}
+  .closing-chapter{min-height:0;padding-block:105px 100px}
+  .closing-layout{grid-template-columns:1fr;gap:70px}
+  .closing-chapter .eyebrow{margin-bottom:44px}
+  .closing-chapter blockquote p{font-size:clamp(58px,12.3vw,86px)}
+  .closing-links p{max-width:45ch}
+  .closing-links{max-width:520px}
+  .home .site-header nav{display:none}
+}
+@media(max-width:390px){
+  .home .hero-bottom a.hero-linkedin{font-size:8px}
+  .signature-item h3{font-size:35px}
+  .signature-heading h2{font-size:60px}
+}
+@media(prefers-reduced-motion:reduce){
+  .signature-item,.signature-link,.closing-links a{transition:none!important}
+}
+.motion-paused .signature-item,.motion-paused .signature-link,.motion-paused .closing-links a{transition:none!important}
+@media print{
+  .closing-chapter{background:white;color:black;min-height:0}
+  .closing-chapter::before,.closing-chapter::after{display:none}
+  .signature-highlights{padding-block:45px}
+  .signature-item{break-inside:avoid}
+}
