@@ -1,21 +1,9 @@
 # Dulten Richard Fromentin
 
-Personal website and public portfolio for Dulten Richard Fromentin.
+Personal website covering leadership, employment, projects, recognition, and community involvement.
 
-**Target root site (migration staged; not deployed):** https://dultenrichard.github.io/
+Private review: https://dulten-editorial-review.dulten.chatgpt.site/?revision=5
 
-The `/brand/` GitHub Pages project URL remains live until the hosting migration is completed.
+The ground-up rebuild is on `redesign/editorial-record`, in draft PR #9. The intended public root is https://dultenrichard.github.io/; that hosting migration remains pending. See docs/DEPLOYMENT.md before production activation.
 
-The site covers experience, skills, awards and recognition, supporting sources, and contact information.
-
-## Website sections
-
-- [About](https://dultenrichard.github.io/)
-- [Experience](https://dultenrichard.github.io/experience/)
-- [Skills](https://dultenrichard.github.io/skills/)
-- [Awards](https://dultenrichard.github.io/awards/)
-- [Sources](https://dultenrichard.github.io/sources/)
-- [Contact](https://dultenrichard.github.io/contact/)
-- [Privacy & data](https://dultenrichard.github.io/privacy/)
-
-Development happens on `dev`; `main` is production.
+`data/profile.json` is the reviewed biographical source. `scripts/build_site.py` generates the content pages and search index; `scripts/build_experience_pdf.py` creates the downloadable experience profile. See DEVELOPMENT.md, docs/CONTENT-AUDIT.md, and docs/DESIGN-SYSTEM.md.

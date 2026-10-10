@@ -1,0 +1,724 @@
+{
+  "updated": "2026-10-10",
+  "name": "Dulten Richard Fromentin",
+  "displayName": "Dulten Richard",
+  "location": "Brockville, Ontario",
+  "email": "fromentindulten@gmail.com",
+  "communityHours": 205,
+  "intro": "I’m Dulten, a Grade 12 student in Brockville. I’m interested in political science, international affairs, public service, and entrepreneurship.",
+  "about": "Since joining Air Cadets in 2021, I’ve spent time instructing, mentoring, and learning how to lead people. Outside cadets, I work at Value Village, play rugby, and put time into practical projects. I’m interested in what people do with an idea once it leaves the page.",
+  "quote": "To be a leader is to be liquid.",
+  "socials": [
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/dultenrpfromentin/"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/dultenrichard"
+    },
+    {
+      "label": "Instagram",
+      "url": "https://www.instagram.com/dultenrp/"
+    }
+  ],
+  "ranks": [
+    {
+      "date": "2021-11-08",
+      "title": "Cadet"
+    },
+    {
+      "date": "2022-04-08",
+      "title": "Leading Air Cadet"
+    },
+    {
+      "date": "2022-05-18",
+      "title": "Corporal"
+    },
+    {
+      "date": "2023-09-25",
+      "title": "Flight Corporal"
+    },
+    {
+      "date": "2024-05-06",
+      "title": "Sergeant"
+    },
+    {
+      "date": "2025-04-28",
+      "title": "Flight Sergeant"
+    },
+    {
+      "date": "2025-11-11",
+      "title": "Warrant Officer Second Class"
+    }
+  ],
+  "employment": [
+    {
+      "id": "cdc",
+      "company": "Value Village",
+      "role": "Community Donation Centre Ambassador",
+      "start": "2026-09",
+      "end": null,
+      "date": "September 2026 — present",
+      "location": "Brockville, Ontario",
+      "body": "I help donors at drop-off, receive and move donated goods, support donation flow and processing, and keep the donation area organised and safe. I moved into this role from retail sales in September 2026.",
+      "skills": [
+        "customer-service",
+        "logistics",
+        "material-handling",
+        "workplace-safety"
+      ]
+    },
+    {
+      "id": "retail",
+      "company": "Value Village",
+      "role": "Retail Salesperson",
+      "start": "2026-04",
+      "end": "2026-09",
+      "date": "April — September 2026",
+      "location": "Brockville, Ontario",
+      "body": "Customer-facing retail work before my move into the Community Donation Centre.",
+      "skills": [
+        "customer-service",
+        "communication",
+        "teamwork"
+      ]
+    },
+    {
+      "id": "aw",
+      "company": "A&W",
+      "role": "Cross-trained team member",
+      "start": "2025-10",
+      "end": "2026-02",
+      "date": "October 2025 — February 2026",
+      "location": "Brockville, Ontario",
+      "body": "I worked across food-service duties, supporting customers and the team during busy shifts.",
+      "skills": [
+        "teamwork",
+        "adaptability",
+        "customer-service"
+      ]
+    },
+    {
+      "id": "currahs",
+      "company": "Currah’s Park Store & Grill",
+      "role": "Front & back of house",
+      "start": "2023-07",
+      "end": "2024-10",
+      "date": "July 2023 — October 2024",
+      "location": "Prince Edward County, Ontario",
+      "body": "I served customers, operated the POS, prepared food, and supported junior staff during the busy summer season.",
+      "skills": [
+        "customer-service",
+        "teamwork",
+        "workplace-safety"
+      ]
+    },
+    {
+      "id": "sunflower",
+      "company": "Sunflower Fields",
+      "role": "Ice cream shop associate",
+      "start": "2023-06",
+      "end": "2023-08",
+      "date": "June — August 2023",
+      "location": "Prince Edward County, Ontario",
+      "body": "My first paid job: serving customers, handling payments, and keeping the ice cream service area clean.",
+      "skills": [
+        "customer-service",
+        "communication",
+        "workplace-safety"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school": "Thousand Islands Secondary School",
+      "period": "September 2025 — February 2027 expected",
+      "start": "2025-09",
+      "end": "2027-02",
+      "status": "OSSD in progress · Grade 12",
+      "body": "Senior mathematics and science, world studies, and practical manufacturing courses. Manufacturing SHSM complete: 18/18 requirements and 9/9 required credits."
+    },
+    {
+      "school": "Prince Edward Collegiate Institute",
+      "period": "September 2023 — June 2025",
+      "start": "2023-09",
+      "end": "2025-06",
+      "status": "Grades 9–10",
+      "body": "Mock trial, school rugby, and academic study. Two Best Advocate awards and Best Closing Statement, April 2025."
+    }
+  ],
+  "training": [
+    {
+      "name": "Fitness & Sports Instructor",
+      "issuer": "Royal Canadian Air Cadets",
+      "date": "August 17, 2025"
+    },
+    {
+      "name": "Personal Training; Advanced Training in a Technique",
+      "issuer": "SHSM",
+      "date": "October 3, 2025"
+    },
+    {
+      "name": "Leadership Skills",
+      "issuer": "SHSM",
+      "date": "December 12, 2025"
+    },
+    {
+      "name": "Health and Safety — Basic",
+      "issuer": "SHSM",
+      "date": "February 13, 2026"
+    },
+    {
+      "name": "Events Coordination; Project Management; Stress Management Techniques",
+      "issuer": "SHSM",
+      "date": "March 26, 2026"
+    },
+    {
+      "name": "CPR/AED, First Aid & Bloodborne Pathogens",
+      "issuer": "Canadian Red Cross",
+      "date": "February 2026",
+      "expiry": "February 2029"
+    }
+  ],
+  "projects": [
+    {
+      "id": "equinox",
+      "name": "Equinox",
+      "type": "Edel 665 sailing project",
+      "status": "Ongoing · Preparing for the 2027 season",
+      "body": "An approximately 22-foot sailboat, and the practical work needed to get it ready: maintenance planning, a workable budget, and summer mooring around Brockville.",
+      "steps": [
+        {
+          "title": "Maintenance",
+          "body": "Researching what needs attention and planning the work before the boat can be used."
+        },
+        {
+          "title": "Budget",
+          "body": "Comparing the full cost of ownership, including seasonal charges, utilities, insurance, and recurring expenses."
+        },
+        {
+          "title": "Mooring",
+          "body": "Researching Brockville-area options and contacting a marina about availability, pricing, season dates, and documentation for 2027."
+        }
+      ]
+    },
+    {
+      "id": "youth-leadership-workshops",
+      "name": "Youth Leadership Workshops",
+      "type": "Business project",
+      "status": "In development · First pilot being planned",
+      "body": "I’m developing a business offering practical, 45–60 minute leadership workshops for youth sports teams. I’m adapting cadet peer-leadership and group-dynamics lessons into activities about communication, teamwork, and confidence.",
+      "steps": [
+        {
+          "title": "Lesson design",
+          "body": "Structured activities, cadet-style lesson planning, and simple assessment."
+        },
+        {
+          "title": "First audience",
+          "body": "Planning around a local youth sports team. The proposed first trial is with the Brockville Braves U13–U15 boys; this is a target, not a confirmed partnership."
+        },
+        {
+          "title": "Pilot",
+          "body": "The workshop has not yet been delivered. The first goal is to test the format and collect useful feedback."
+        }
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "id": "strathcona",
+      "title": "Lord Strathcona Medal",
+      "meta": "2026 · 661 Squadron",
+      "category": "Cadets",
+      "body": "I received the Lord Strathcona Medal at 661 Squadron’s Annual Ceremonial Review on June 2, 2026.",
+      "proof": "Supporting record held on file",
+      "source": "Official award background ↗"
+    },
+    {
+      "id": "service",
+      "title": "Air Cadet Service Medal",
+      "meta": "2026 · Air Cadets",
+      "category": "Cadets",
+      "body": "I received the Air Cadet Service Medal at the June 2026 Annual Ceremonial Review. The Air Cadet League’s award recognizes at least four years of continuous meritorious cadet service.",
+      "proof": "Supporting record held on file",
+      "source": "Air Cadet League award information ↗"
+    },
+    {
+      "id": "instructor",
+      "title": "Top Cadet Instructor",
+      "meta": "2026 · 661 Squadron",
+      "category": "Cadets",
+      "body": "I received Top Cadet Instructor recognition at 661 Squadron’s 2026 Annual Ceremonial Review.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "fitness",
+      "title": "Best Physical Fitness",
+      "meta": "2026 · 661 Squadron",
+      "category": "Cadets",
+      "body": "I received Best Physical Fitness recognition at the squadron’s 2026 Annual Ceremonial Review.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "cossa-rugby",
+      "title": "COSSA Silver Medalist",
+      "meta": "2025 · Rugby",
+      "category": "Sport",
+      "body": "I earned a silver medal at COSSA in rugby as part of my school team’s competitive season.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "advocate",
+      "title": "Best Advocate",
+      "meta": "April 2025 · PECI · Mock trial · Two awards",
+      "category": "School",
+      "body": "I received two Best Advocate awards at PECI in April 2025, during Grade 10.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "closing",
+      "title": "Best Closing Statement",
+      "meta": "April 2025 · PECI · Mock trial · One award",
+      "category": "School",
+      "body": "I received the Best Closing Statement award at PECI in April 2025, during Grade 10.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "legion",
+      "title": "Poppy Appreciation",
+      "meta": "2026 · Royal Canadian Legion, Branch 48",
+      "category": "Community",
+      "body": "I received Royal Canadian Legion Poppy Appreciation recognition associated with Branch 48 on June 2, 2026.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "honour-roll",
+      "title": "Honour Roll",
+      "meta": "2023–2024 · Academic recognition",
+      "category": "School",
+      "body": "I achieved Honour Roll recognition for the 2023–2024 school year.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "squadron-record",
+      "title": "Squadron recognition before 661.",
+      "meta": "2023–2025 · 851 Prince Edward RCACS",
+      "category": "Cadets",
+      "body": "My earlier record at 851 Prince Edward Squadron includes several awards for attendance, fundraising, contribution, and development. Spring 2023: 2nd Place Tagging Award and Top Overall Tagging Award. 2023–2024: Bronze Attendance Award; Commanding Officer Commendation for contribution to the squadron; Range Safety Officer Most Improved Marksman Award; and the Jim Lounsberry Memorial Award for Top Fundraiser. 2024–2025: Silver Attendance Award.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "school-recognition",
+      "title": "Academic and all-around recognition.",
+      "meta": "2022–2023 · School recognition",
+      "category": "School",
+      "body": "My school record includes recognition for academics, participation, and overall contribution. 6 Jun 2022: recognition through the Kingston Math League Fun and Excellence in Mathematics tournament. 2023: E.T.F.O. Award at Athol-South Marysburgh School. 18 Jun 2023: Best All Around Student.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "remembrance-contest",
+      "title": "Remembrance Day literary contest.",
+      "meta": "2020–2022 · Royal Canadian Legion Branch 387",
+      "category": "Community",
+      "body": "Three consecutive placements in Royal Canadian Legion Remembrance Day poem competition categories. 2020: 2nd Place, Junior Poem. 2021: 2nd Place, Intermediate Poem. 2022: 3rd Place, Intermediate Poem.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "legion-service",
+      "title": "Certificate of Appreciation",
+      "meta": "13 Apr 2026 · Royal Canadian Legion Branch 105",
+      "category": "Community",
+      "body": "Presented in recognition of services rendered to the Branch 105 Cardinal Ceremony of Induction.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "ja",
+      "title": "Entrepreneurship",
+      "meta": "JA Canada · Certificate of Accomplishment",
+      "category": "Enterprise",
+      "body": "I completed a JA Canada entrepreneurship program and received a Certificate of Accomplishment.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    },
+    {
+      "id": "nomination",
+      "title": "theROC Bright Future Award",
+      "meta": "2025 · Nomination",
+      "category": "Enterprise",
+      "body": "I was nominated for theROC Bright Future Award in May 2025. This entry records a nomination, rather than an award win.",
+      "proof": "Supporting record held on file",
+      "source": ""
+    }
+  ],
+  "years": {
+    "2019": [
+      {
+        "id": "prince-edward-county-4-h",
+        "title": "Prince Edward County 4-H",
+        "body": "Participation in the Maple Syrup Club and Pizza Club is part of my earliest documented community and practical-learning record."
+      }
+    ],
+    "2020": [
+      {
+        "id": "2nd-place-junior-poem",
+        "title": "2nd Place · Junior Poem",
+        "body": "A second-place result in the Royal Canadian Legion Branch 387 Remembrance Day poem competition, Junior category."
+      }
+    ],
+    "2021": [
+      {
+        "id": "joined-royal-canadian-air-cadets",
+        "title": "Joined Royal Canadian Air Cadets",
+        "body": "The beginning of my cadet experience, initially with 851 Prince Edward RCACS."
+      },
+      {
+        "id": "2nd-place-intermediate-poem",
+        "title": "2nd Place · Intermediate Poem",
+        "body": "A second consecutive second-place result in the Royal Canadian Legion Branch 387 Remembrance Day poem competition, this time in the Intermediate category."
+      },
+      {
+        "id": "rank-cadet",
+        "title": "Cadet",
+        "body": "Promotion date: 2021-11-08.",
+        "date": "2021-11-08",
+        "kind": "rank"
+      }
+    ],
+    "2022": [
+      {
+        "id": "cadet-activity-program-1",
+        "title": "Cadet Activity Program 1",
+        "body": "CAP 1, completed on August 26, 2022, was an early formal cadet training milestone."
+      },
+      {
+        "id": "math-league-recognition",
+        "title": "Math League recognition",
+        "body": "Recognition through the Kingston Math League Fun and Excellence in Mathematics tournament on June 6, 2022."
+      },
+      {
+        "id": "3rd-place-intermediate-poem",
+        "title": "3rd Place · Intermediate Poem",
+        "body": "A third-place result in the Royal Canadian Legion Branch 387 Remembrance Day poem competition."
+      },
+      {
+        "id": "rank-leading-air-cadet",
+        "title": "Leading Air Cadet",
+        "body": "Promotion date: 2022-04-08.",
+        "date": "2022-04-08",
+        "kind": "rank"
+      },
+      {
+        "id": "rank-corporal",
+        "title": "Corporal",
+        "body": "Promotion date: 2022-05-18.",
+        "date": "2022-05-18",
+        "kind": "rank"
+      }
+    ],
+    "2023": [
+      {
+        "id": "cadet-activity-program-2",
+        "title": "Cadet Activity Program 2",
+        "body": "CAP 2, completed during summer 2023, continued my formal cadet development after CAP 1."
+      },
+      {
+        "id": "best-all-around-student",
+        "title": "Best All Around Student",
+        "body": "School recognition received on June 18, 2023."
+      },
+      {
+        "id": "e-t-f-o-award",
+        "title": "E.T.F.O. Award",
+        "body": "An award presented at Athol-South Marysburgh School in 2023. My record confirms the award; I am keeping the public description conservative until the original criteria are attached to the site."
+      },
+      {
+        "id": "spring-tagging-awards",
+        "title": "Spring Tagging Awards",
+        "body": "At 851 Squadron, I received 2nd Place Tagging and Top Overall Tagging recognition in spring 2023."
+      },
+      {
+        "id": "first-paid-employment",
+        "title": "First paid employment",
+        "body": "I started customer-facing work at Sunflower Fields and later Currah’s Park Store & Grill."
+      },
+      {
+        "id": "rank-flight-corporal",
+        "title": "Flight Corporal",
+        "body": "Promotion date: 2023-09-25.",
+        "date": "2023-09-25",
+        "kind": "rank"
+      }
+    ],
+    "2024": [
+      {
+        "id": "honour-roll",
+        "title": "Honour Roll",
+        "body": "Academic recognition for the 2023–2024 school year."
+      },
+      {
+        "id": "bronze-attendance-award",
+        "title": "Bronze Attendance Award",
+        "body": "Attendance recognition at 851 Prince Edward RCACS for the 2023–2024 training year."
+      },
+      {
+        "id": "commanding-officer-commendation",
+        "title": "Commanding Officer Commendation",
+        "body": "A squadron commendation for contribution at 851 Squadron."
+      },
+      {
+        "id": "most-improved-marksman",
+        "title": "Most Improved Marksman",
+        "body": "Range Safety Officer recognition for improvement in marksmanship."
+      },
+      {
+        "id": "jim-lounsberry-memorial-award-top-fundraiser",
+        "title": "Jim Lounsberry Memorial Award · Top Fundraiser",
+        "body": "The 851 Squadron memorial award recognizing top fundraising performance."
+      },
+      {
+        "id": "rank-sergeant",
+        "title": "Sergeant",
+        "body": "Promotion date: 2024-05-06.",
+        "date": "2024-05-06",
+        "kind": "rank"
+      }
+    ],
+    "2025": [
+      {
+        "id": "fitness-and-sports-instructor",
+        "title": "Fitness & Sports Instructor",
+        "body": "Completed the Royal Canadian Air Cadets Fitness and Sports Instructor qualification at Blackdown CTC on August 17, 2025."
+      },
+      {
+        "id": "cossa-rugby-silver-medalist",
+        "title": "COSSA Rugby Silver Medalist",
+        "body": "A silver-medal team result in the 2025 school rugby season."
+      },
+      {
+        "id": "silver-attendance-award",
+        "title": "Silver Attendance Award",
+        "body": "Continued attendance recognition at 851 Squadron for the 2024–2025 training year."
+      },
+      {
+        "id": "theroc-bright-future-award-nomination",
+        "title": "theROC Bright Future Award nomination",
+        "body": "A May 2025 nomination for the theROC Bright Future Award. This is a nomination, not an award win."
+      },
+      {
+        "id": "two-best-advocate-awards",
+        "title": "Two Best Advocate awards",
+        "body": "Two Best Advocate recognitions earned through mock trial in April 2025."
+      },
+      {
+        "id": "best-closing",
+        "title": "Best Closing",
+        "body": "A Best Closing recognition earned through mock trial in April 2025."
+      },
+      {
+        "id": "rank-flight-sergeant",
+        "title": "Flight Sergeant",
+        "body": "Promotion date: 2025-04-28.",
+        "date": "2025-04-28",
+        "kind": "rank"
+      },
+      {
+        "id": "rank-warrant-officer-second-class",
+        "title": "Warrant Officer Second Class",
+        "body": "Promotion date: 2025-11-11.",
+        "date": "2025-11-11",
+        "kind": "rank"
+      }
+    ],
+    "2026": [
+      {
+        "id": "staff-cadet-sergeant-blackdown-ctc",
+        "title": "Staff Cadet Sergeant · Blackdown CTC",
+        "body": "Returned to Blackdown in 2026 as a Staff Cadet Sergeant, including two weeks as a platoon sergeant and four weeks in company float/support."
+      },
+      {
+        "id": "royal-canadian-legion-certificate-of-appreciation",
+        "title": "Royal Canadian Legion Certificate of Appreciation",
+        "body": "Presented by Branch 105 Cardinal on April 13, 2026, for service to its Ceremony of Induction."
+      },
+      {
+        "id": "lord-strathcona-medal",
+        "title": "Lord Strathcona Medal",
+        "body": "Received at 661 Squadron’s Annual Ceremonial Review on June 2, 2026. It is one of the major national cadet recognitions and is tied to performance in cadet training, physical fitness, and commitment."
+      },
+      {
+        "id": "air-cadet-service-medal",
+        "title": "Air Cadet Service Medal",
+        "body": "Received in June 2026 in recognition of sustained cadet service."
+      },
+      {
+        "id": "top-cadet-instructor",
+        "title": "Top Cadet Instructor",
+        "body": "Received at 661 Squadron’s 2026 Annual Ceremonial Review."
+      },
+      {
+        "id": "best-physical-fitness",
+        "title": "Best Physical Fitness",
+        "body": "Received at 661 Squadron’s 2026 Annual Ceremonial Review."
+      },
+      {
+        "id": "royal-canadian-legion-poppy-appreciation",
+        "title": "Royal Canadian Legion Poppy Appreciation",
+        "body": "Community recognition associated with Royal Canadian Legion Branch 48, received June 2, 2026."
+      },
+      {
+        "id": "manufacturing-shsm-completed",
+        "title": "Manufacturing SHSM completed",
+        "body": "My Manufacturing Specialist High Skills Major is complete."
+      },
+      {
+        "id": "205-community-involvement-hours",
+        "title": "205 community-involvement hours",
+        "body": "My current recorded community-involvement total is 205 hours."
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "leadership",
+      "name": "Leadership",
+      "text": "Senior squadron responsibility, mentoring junior cadets, and staff-cadet work.",
+      "links": [
+        {
+          "text": "Cadet service",
+          "href": "/experience/#cadets"
+        },
+        {
+          "text": "Youth Leadership Workshops",
+          "href": "/projects/#youth-leadership-workshops"
+        }
+      ]
+    },
+    {
+      "id": "instruction",
+      "name": "Instruction",
+      "text": "Fitness and sports instruction, lesson planning, and leading activities.",
+      "links": [
+        {
+          "text": "Training & instruction",
+          "href": "/experience/#cadets"
+        },
+        {
+          "text": "Top Cadet Instructor",
+          "href": "/awards/#instructor"
+        }
+      ]
+    },
+    {
+      "id": "communication",
+      "name": "Communication",
+      "text": "Teaching, customer service, public speaking, and mock-trial advocacy.",
+      "links": [
+        {
+          "text": "Mock trial",
+          "href": "/awards/#advocate"
+        },
+        {
+          "text": "Employment",
+          "href": "/experience/#employment"
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "name": "Research",
+      "text": "Comparing sources, costs, and requirements for practical decisions.",
+      "links": [
+        {
+          "text": "Equinox",
+          "href": "/projects/#equinox"
+        },
+        {
+          "text": "Education",
+          "href": "/experience/#learning"
+        }
+      ]
+    },
+    {
+      "id": "planning",
+      "name": "Planning",
+      "text": "Lesson plans, sports setup, duty schedules, and project preparation.",
+      "links": [
+        {
+          "text": "Cadet service",
+          "href": "/experience/#cadets"
+        },
+        {
+          "text": "Projects",
+          "href": "/projects/"
+        }
+      ]
+    },
+    {
+      "id": "teamwork",
+      "name": "Teamwork",
+      "text": "Rugby, rowing, restaurant work, and cadet training.",
+      "links": [
+        {
+          "text": "Sport & community",
+          "href": "/experience/#community"
+        }
+      ]
+    },
+    {
+      "id": "customer-service",
+      "name": "Customer service",
+      "text": "Retail sales, donor assistance, restaurant service, and handling payments.",
+      "links": [
+        {
+          "text": "Employment record",
+          "href": "/experience/#employment"
+        }
+      ]
+    },
+    {
+      "id": "logistics",
+      "name": "Logistics",
+      "text": "Donation flow, receiving goods, material handling, and staff-cadet support.",
+      "links": [
+        {
+          "text": "CDC Ambassador",
+          "href": "/experience/#cdc"
+        }
+      ]
+    },
+    {
+      "id": "workplace-safety",
+      "name": "Safety",
+      "text": "Keeping service and donation areas organised; safety checks in sports instruction.",
+      "links": [
+        {
+          "text": "Training",
+          "href": "/experience/#learning"
+        }
+      ]
+    },
+    {
+      "id": "adaptability",
+      "name": "Adaptability",
+      "text": "Moving between instruction, team support, service roles, and practical projects.",
+      "links": [
+        {
+          "text": "Experience",
+          "href": "/experience/"
+        }
+      ]
+    }
+  ]
+}

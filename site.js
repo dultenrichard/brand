@@ -1,592 +1,544 @@
-"use strict";
-
-const UMAMI_SRC = "https://cloud.umami.is/script.js";
-const UMAMI_WEBSITE_ID = "83a9f356-ddca-4004-a55c-96f06d9a6b14";
-const pendingAnalyticsEvents = [];
-
-function storedAnalyticsPreference() {
-  try {
-    return localStorage.getItem("privacy-analytics");
-  } catch {
-    return null;
-  }
-}
-
-function analyticsAllowed() {
-  if (navigator.globalPrivacyControl === true) return false;
-  if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return false;
-  return storedAnalyticsPreference() !== "off";
-}
-
-function flushAnalyticsEvents() {
-  if (!analyticsAllowed() || !window.umami?.track) return;
-  while (pendingAnalyticsEvents.length) {
-    const [name, payload] = pendingAnalyticsEvents.shift();
-    window.umami.track(name, payload);
-  }
-}
-
-function loadAnalytics() {
-  if (!analyticsAllowed() || document.querySelector('script[data-website-id="' + UMAMI_WEBSITE_ID + '"]')) return;
-  const script = document.createElement("script");
-  script.defer = true;
-  script.src = UMAMI_SRC;
-  script.dataset.websiteId = UMAMI_WEBSITE_ID;
-  script.dataset.domains = "dultenrichard.github.io";
-  script.dataset.excludeSearch = "true";
-  script.addEventListener("load", flushAnalyticsEvents, { once: true });
-  document.head.append(script);
-}
-
-const safeCampaignContext = (() => {
-  const params = new URLSearchParams(window.location.search);
-  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_content"];
-  const context = {};
-  allowed.forEach((key) => {
-    const value = params.get(key);
-    if (value) context[key] = value.slice(0, 100);
-  });
-  return context;
-})();
-
-function trackEvent(name, data = {}) {
-  if (!analyticsAllowed()) return;
-  const payload = { ...safeCampaignContext, ...data };
-  if (window.umami && typeof window.umami.track === "function") {
-    window.umami.track(name, payload);
-  } else {
-    pendingAnalyticsEvents.push([name, payload]);
-  }
-}
-
-loadAnalytics();
-
-function compactLabel(value) {
-  return String(value || "").replace(/\s+/g, " ").trim().slice(0, 100);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!reduceMotion && "IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
-    );
-    document
-      .querySelectorAll(".detail, .skill-card, .card, .award-artifact, .feature-row, .recognition-list li, .interest-lines > div, .section-copy")
-      .forEach((element) => {
-        element.classList.add("reveal-item");
-        revealObserver.observe(element);
-      });
-  }
-
-  const privacyStatus = document.getElementById("privacy-analytics-status");
-  const disableAnalytics = document.getElementById("privacy-disable-analytics");
-  const enableAnalytics = document.getElementById("privacy-enable-analytics");
-
-  function updatePrivacyStatus() {
-    if (!privacyStatus) return;
-    if (navigator.globalPrivacyControl === true) {
-      privacyStatus.textContent = "Analytics off — Global Privacy Control is enabled.";
-    } else if (navigator.doNotTrack === "1" || window.doNotTrack === "1") {
-      privacyStatus.textContent = "Analytics off — Do Not Track is enabled.";
-    } else {
-      privacyStatus.textContent = analyticsAllowed()
-        ? "Analytics enabled for this browser."
-        : "Analytics disabled for this browser.";
-    }
-  }
-
-  disableAnalytics?.addEventListener("click", () => {
-    try { localStorage.setItem("privacy-analytics", "off"); } catch {}
-    pendingAnalyticsEvents.length = 0;
-    updatePrivacyStatus();
-  });
-
-  enableAnalytics?.addEventListener("click", () => {
-    if (navigator.globalPrivacyControl === true || navigator.doNotTrack === "1" || window.doNotTrack === "1") {
-      updatePrivacyStatus();
-      return;
-    }
-    try { localStorage.setItem("privacy-analytics", "on"); } catch {}
-    loadAnalytics();
-    updatePrivacyStatus();
-  });
-
-  updatePrivacyStatus();
-
-  trackEvent("page_loaded", { page: window.location.pathname });
-
-  if (window.location.pathname.endsWith("/contact.html")) {
-    trackEvent("contact_view");
-  }
-
-  const prefilledTopic = new URLSearchParams(window.location.search).get("topic");
-  if (prefilledTopic) {
-    trackEvent("contact_topic_prefill", { topic: compactLabel(prefilledTopic) });
-  }
-
-  document.querySelectorAll(".nav-dropdown").forEach((dropdown) => {
-    dropdown.addEventListener("toggle", () => {
-      if (dropdown.open) {
-        trackEvent("nav_open", {
-          section: compactLabel(dropdown.querySelector("summary")?.textContent),
-        });
-      }
-    });
-  });
-
-  const seenSections = new Set();
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || entry.intersectionRatio < 0.5) return;
-          const id = entry.target.id;
-          if (!id || seenSections.has(id)) return;
-          seenSections.add(id);
-          trackEvent("section_view", { section: id });
-        });
-      },
-      { threshold: [0.5] },
-    );
-    document.querySelectorAll("main section[id], main .detail[id]").forEach((section) =>
-      observer.observe(section),
-    );
-  }
-
-  const scrollMilestones = new Set();
-  window.addEventListener("scroll", () => {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    if (scrollable <= 0) return;
-    const percent = Math.round((window.scrollY / scrollable) * 100);
-    [25, 50, 75, 90].forEach((mark) => {
-      if (percent >= mark && !scrollMilestones.has(mark)) {
-        scrollMilestones.add(mark);
-        trackEvent("scroll_depth", { percent: mark });
-      }
-    });
-  }, { passive: true });
-});
-
-document.addEventListener("click", (event) => {
-  const link = event.target.closest("a");
-  if (!link) return;
-  const href = link.getAttribute("href") || "";
-  const label = compactLabel(link.textContent);
-
-  if (link.closest(".dropdown-panel")) {
-    trackEvent("nav_click", { label, destination: href.slice(0, 160) });
-  }
-  if (link.matches(".button, .text-link")) {
-    trackEvent("cta_click", { label, destination: href.slice(0, 160) });
-  }
-  if (href.startsWith("mailto:")) {
-    trackEvent("email_click", {
-      placement: link.closest(".contact-options")
-        ? "contact_options"
-        : link.closest(".dropdown-panel")
-          ? "nav_dropdown"
-          : link.closest(".actions")
-            ? "actions"
-            : "other",
-    });
-    return;
-  }
-  if (link.classList.contains("social-link")) {
-    let platform = "other";
-    if (href.includes("linkedin.com")) platform = "linkedin";
-    else if (href.includes("github.com")) platform = "github";
-    else if (href.includes("instagram.com")) platform = "instagram";
-    trackEvent("social_click", { platform });
-    return;
-  }
-  try {
-    const url = new URL(link.href, window.location.href);
-    if (url.origin !== window.location.origin && /^https?:$/.test(url.protocol)) {
-      trackEvent("outbound_click", { host: url.hostname.slice(0, 100) });
-    }
-  } catch {}
-  if (link.closest(".award-artifact") && /certificate|document/i.test(label)) {
-    trackEvent("certificate_view", { label });
-  }
-  if (window.location.pathname.endsWith("/sources.html")) {
-    trackEvent("source_open", { label, destination: href.slice(0, 160) });
-  }
-});
-
-const copyButton = document.getElementById("copy-email");
-if (copyButton && navigator.clipboard && window.isSecureContext) {
-  copyButton.hidden = false;
-  copyButton.addEventListener("click", async () => {
-    const status = document.getElementById("copy-status");
-    try {
-      await navigator.clipboard.writeText("fromentindulten@gmail.com");
-      status.textContent = "Email address copied.";
-      trackEvent("email_copy");
-    } catch {
-      status.textContent = "Please select and copy the email address above.";
-    }
-  });
-}
-const form = document.getElementById("contact-form");
-if (form) {
-  document.getElementById("composer").hidden = false;
-  const topic = new URLSearchParams(window.location.search).get("topic");
-  if ([...form.elements.topic.options].some((option) => option.value === topic))
-    form.elements.topic.value = topic;
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
-    const fields = new FormData(form);
-    const name = String(fields.get("name")).trim();
-    const message = String(fields.get("message")).trim();
-    if (!name || !message) {
-      document.getElementById("form-status").textContent =
-        "Please enter your name and a message.";
-      return;
-    }
-    trackEvent("contact_prepare", { topic: compactLabel(fields.get("topic")) });
-    const subject = fields.get("topic") + " enquiry from " + name;
-    const body =
-      message + "\n\n" + name + "\nReply email: " + fields.get("email");
-    window.location.href =
-      "mailto:fromentindulten@gmail.com?subject=" +
-      encodeURIComponent(subject) +
-      "&body=" +
-      encodeURIComponent(body);
-    document.getElementById("form-status").textContent =
-      "Email draft requested. Your message has not been sent by this website.";
-  });
-}
-
-// Native disclosures work without JavaScript; enhance dismissal and exclusivity.
-const navDropdowns = [...document.querySelectorAll(".nav-dropdown")];
-function closeDropdowns(except = null) {
-  navDropdowns.forEach((dropdown) => {
-    if (dropdown !== except) dropdown.open = false;
-  });
-}
-navDropdowns.forEach((dropdown) => {
-  const summary = dropdown.querySelector("summary");
-  summary.addEventListener("click", () => {
-    if (!dropdown.open) closeDropdowns(dropdown);
-  });
-  dropdown.addEventListener("toggle", () => {
-    if (dropdown.open) closeDropdowns(dropdown);
-  });
-  dropdown
-    .querySelectorAll("a")
-    .forEach((link) => link.addEventListener("click", () => closeDropdowns()));
-});
-document.addEventListener("click", (event) => {
-  if (!event.target.closest(".nav-dropdown")) closeDropdowns();
-});
-document.addEventListener("keydown", (event) => {
-  if (event.key !== "Escape") return;
-  const open = navDropdowns.find((dropdown) => dropdown.open);
-  if (open) {
-    closeDropdowns();
-    open.querySelector("summary").focus();
-  }
-});
-document.addEventListener("focusin", (event) => {
-  if (!event.target.closest(".nav-dropdown")) closeDropdowns();
-});
-
-// Open a collapsed account when a direct section link points inside it.
-function revealLinkedSection() {
-  const id = decodeURIComponent(window.location.hash.slice(1));
-  if (!id) return;
-  const target = document.getElementById(id);
-  if (!target) return;
-  let parent = target.parentElement;
-  while (parent) {
-    if (parent.matches("details")) parent.open = true;
-    parent = parent.parentElement;
-  }
-  requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
-}
-window.addEventListener("hashchange", revealLinkedSection);
-revealLinkedSection();
-
-// Skill filters use URL state so every skill is a shareable entry point.
-const skillSearch = document.getElementById("skill-search");
-if (skillSearch) {
-  const cards = [...document.querySelectorAll(".skill-card")];
-  const filters = [...document.querySelectorAll(".skill-filter")];
-  let selected = "";
-  const aliases = {
-    leadership: "lead mentor management",
-    instruction: "teach training coaching",
-    communication: "speaking writing advocacy presentation",
-    organization: "administration logistics coordination",
-    "customer-service": "sales retail hospitality customers",
-    research: "analysis evidence investigation",
-    planning: "project preparation",
-    budgeting: "cost finance money",
-    "problem-solving": "practical technical troubleshooting",
-    teamwork: "team collaboration",
-    adaptability: "flexible flexibility",
-  };
-  function renderSkills(updateUrl = false) {
-    const query = skillSearch.value.trim().toLowerCase();
-    let count = 0;
-    cards.forEach((card) => {
-      const skills = card.dataset.skills.split(" ");
-      const searchable = (
-        card.textContent +
-        " " +
-        skills.map((s) => aliases[s] || "").join(" ")
-      ).toLowerCase();
-      const visible =
-        (!selected || skills.includes(selected)) &&
-        query.split(/\s+/).every((word) => searchable.includes(word));
-      card.hidden = !visible;
-      if (visible) count++;
-    });
-    filters.forEach((button) =>
-      button.setAttribute(
-        "aria-pressed",
-        String(button.dataset.skill === selected),
-      ),
-    );
-    document.getElementById("skill-count").textContent =
-      `${count} ${count === 1 ? "example" : "examples"} shown`;
-    document.querySelector(".no-results").hidden = count > 0;
-    if (updateUrl) {
-      const url = new URL(location.href);
-      selected
-        ? url.searchParams.set("skill", selected)
-        : url.searchParams.delete("skill");
-      query ? url.searchParams.set("q", query) : url.searchParams.delete("q");
-      history.replaceState(null, "", url);
-    }
-  }
-  function restoreSkills() {
-    const params = new URLSearchParams(location.search);
-    selected = filters.some(
-      (button) => button.dataset.skill === params.get("skill"),
-    )
-      ? params.get("skill")
-      : "";
-    skillSearch.value = params.get("q") || "";
-    renderSkills();
-  }
-  filters.forEach((button) =>
-    button.addEventListener("click", () => {
-      selected = button.dataset.skill;
-      trackEvent("skill_filter", { skill: selected });
-      renderSkills(true);
-    }),
-  );
-  skillSearch.addEventListener("input", () => renderSkills(true));
-  document.getElementById("clear-skills").addEventListener("click", () => {
-    selected = "";
-    skillSearch.value = "";
-    trackEvent("skill_clear");
-    renderSkills(true);
-    skillSearch.focus();
-  });
-  window.addEventListener("popstate", restoreSkills);
-  restoreSkills();
-  document.querySelector(".skill-controls").hidden = false;
-}
-
-// Award assets stay separate from layout. Empty entries are intentionally omitted.
-const awardGallery = document.getElementById("award-gallery");
-if (awardGallery) {
-  const localAsset = (value) => {
-    if (typeof value !== "string" || !value.trim()) return null;
-    const url = new URL(value, location.href);
-    return url.origin === location.origin &&
-      /\.(png|jpe?g|webp|pdf)$/i.test(url.pathname)
-      ? url.href
-      : null;
-  };
-  fetch("/data/awards.json")
-    .then((response) => {
-      if (!response.ok) throw new Error("Collection unavailable");
-      return response.json();
-    })
-    .then((records) => {
-      const collection = document.createDocumentFragment();
-      records.forEach((record) => {
-        const image = localAsset(record.image);
-        const documentUrl = localAsset(record.document);
-        if (!image && !documentUrl) return;
-        const card = document.createElement("article");
-        card.className = "award-artifact";
-        if (image) {
-          const link = document.createElement("a");
-          link.href = image;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          const img = document.createElement("img");
-          img.src = image;
-          img.alt = record.alt || record.title;
-          img.loading = "lazy";
-          img.decoding = "async";
-          link.append(img);
-          card.append(link);
-        }
-        const title = document.createElement("h3");
-        title.textContent = record.title;
-        card.append(title);
-        if (record.caption) {
-          const p = document.createElement("p");
-          p.textContent = record.caption;
-          card.append(p);
-        }
-        const story = document.createElement("a");
-        story.href = "#" + encodeURIComponent(record.id);
-        story.textContent = "Read the story ↗";
-        story.className = "text-link";
-        card.append(story);
-        if (documentUrl) {
-          const link = document.createElement("a");
-          link.href = documentUrl;
-          link.textContent = "View certificate ↗";
-          link.className = "text-link";
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          card.append(link);
-        }
-        collection.append(card);
-      });
-      if (collection.childNodes.length)
-        awardGallery.replaceChildren(collection);
-    })
-    .catch(() => {
-      /* The useful static collection introduction remains visible. */
-    });
-}
-
-// Compact navigation for tablet and mobile.
-const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
-const mobileHeader = document.querySelector(".floating-header");
-if (mobileHeader && mobileMenuToggle) {
-  const primaryLinks = document.getElementById("primary-links");
-  const closeMobileMenu = () => {
-    mobileHeader.classList.remove("menu-open");
-    mobileMenuToggle.setAttribute("aria-expanded", "false");
-    mobileMenuToggle.querySelector(".mobile-menu-icon").textContent = "☰";
-    closeDropdowns();
-  };
-  const openMobileMenu = () => {
-    mobileHeader.classList.add("menu-open");
-    mobileMenuToggle.setAttribute("aria-expanded", "true");
-    mobileMenuToggle.querySelector(".mobile-menu-icon").textContent = "×";
-    mobileHeader.classList.remove("header-hidden");
-  };
-  mobileMenuToggle.addEventListener("click", () => {
-    mobileHeader.classList.contains("menu-open")
-      ? closeMobileMenu()
-      : openMobileMenu();
-  });
-  primaryLinks?.querySelectorAll("a").forEach((link) =>
-    link.addEventListener("click", closeMobileMenu),
-  );
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && mobileHeader.classList.contains("menu-open")) {
-      closeMobileMenu();
-      mobileMenuToggle.focus();
-    }
-  });
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 900) closeMobileMenu();
-  });
-}
-
-// Keep navigation available at the top and on upward scroll; clear the view on descent.
-const floatingHeader = document.querySelector(".floating-header");
-if (floatingHeader) {
-  let previousScroll = Math.max(0, window.scrollY);
-  let scrollQueued = false;
-  function updateHeader() {
-    const current = Math.max(0, window.scrollY);
-    floatingHeader.classList.toggle("is-scrolled", current > 20);
-    const delta = current - previousScroll;
-    const interacting =
-      floatingHeader.contains(document.activeElement) ||
-      floatingHeader.querySelector("details[open]") ||
-      floatingHeader.classList.contains("menu-open");
-    if (current < 80 || interacting || delta < -5)
-      floatingHeader.classList.remove("header-hidden");
-    else if (delta > 5) floatingHeader.classList.add("header-hidden");
-    if (Math.abs(delta) > 5) previousScroll = current;
-    scrollQueued = false;
-  }
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!scrollQueued) {
-        requestAnimationFrame(updateHeader);
-        scrollQueued = true;
-      }
-    },
-    { passive: true },
-  );
-  floatingHeader.addEventListener("focusin", () =>
-    floatingHeader.classList.remove("header-hidden"),
-  );
-}
-
-
-// Animated vertical record timeline.
+'use strict';
 (() => {
-  const timeline = document.querySelector("[data-story-timeline]");
-  if (!timeline) return;
-  const items = [...timeline.querySelectorAll(".story-year")];
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const data = window.SITE_DATA || { search: [], email: 'fromentindulten@gmail.com' };
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const read = key => { try { return localStorage.getItem(key); } catch { return null; } };
+  const write = (key, value) => { try { localStorage.setItem(key, value); } catch {} };
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let paused = read('motion-paused') === 'true' || reduced.matches;
+  let animations = [];
+  const motionButton = $('#motion-toggle');
+  function applyMotion() {
+    document.documentElement.classList.toggle('motion-paused', paused);
+    if (motionButton) {
+      motionButton.hidden = false;
+      motionButton.setAttribute('aria-pressed', String(paused));
+      motionButton.textContent = paused ? 'Resume motion' : 'Pause motion';
+    }
+    if (paused) {
+      animations.forEach(a => a.finish());
+      animations = [];
+      document.documentElement.style.setProperty('--hero-offset', '0px');
+    }
+  }
+  motionButton?.addEventListener('click', () => { paused = !paused; write('motion-paused', String(paused)); applyMotion(); });
+  reduced.addEventListener('change', () => { paused = reduced.matches || read('motion-paused') === 'true'; applyMotion(); });
+  applyMotion();
 
-  if (reduceMotion || !("IntersectionObserver" in window)) {
-    items.forEach((item) => item.classList.add("is-visible"));
-  } else {
-    const reveal = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        reveal.unobserve(entry.target);
-      });
-    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
-    items.forEach((item) => reveal.observe(item));
+  // Analytics never receives free-form search or contact data, and never loads in the private review.
+  const publicHost = location.hostname === 'dultenrichard.github.io';
+  const privacySignal = () => navigator.globalPrivacyControl === true || navigator.doNotTrack === '1' || window.doNotTrack === '1';
+  const analyticsAllowed = () => publicHost && !privacySignal() && read('privacy-analytics') === 'on';
+  function loadAnalytics() {
+    if (!analyticsAllowed() || $('#umami-script')) return;
+    const script = document.createElement('script');
+    script.id = 'umami-script'; script.defer = true;
+    script.src = 'https://cloud.umami.is/script.js';
+    script.dataset.websiteId = '83a9f356-ddca-4004-a55c-96f06d9a6b14';
+    script.dataset.domains = 'dultenrichard.github.io';
+    script.dataset.excludeSearch = 'true';
+    document.head.append(script);
+  }
+  function track(name, fields = {}) { if (analyticsAllowed() && window.umami?.track) window.umami.track(name, fields); }
+  function privacyStatus() {
+    const el = $('#privacy-analytics-status');
+    if (!el) return;
+    el.textContent = !publicHost ? 'Analytics are disabled on this private review.' : privacySignal() ? 'Analytics are off because a browser privacy signal is enabled.' : analyticsAllowed() ? 'Analytics enabled in this browser.' : 'Analytics disabled in this browser.';
+    const enable = $('#privacy-enable-analytics');
+    if (enable) enable.disabled = !publicHost || privacySignal();
+  }
+  $('#privacy-enable-analytics')?.addEventListener('click', () => { write('privacy-analytics', 'on'); loadAnalytics(); privacyStatus(); });
+  $('#privacy-disable-analytics')?.addEventListener('click', () => {
+    write('privacy-analytics', 'off');
+    // Reload stops an already-running third-party script and its automatic listeners.
+    if ($('#umami-script')) location.reload(); else privacyStatus();
+  });
+  loadAnalytics(); privacyStatus();
+
+  // Native dialogs supply focus containment, Escape, and focus restoration.
+  const search = $('#site-search'), menu = $('#site-menu');
+  function openDialog(dialog, focusTarget) {
+    if (!dialog || typeof dialog.showModal !== 'function') return;
+    $$('dialog[open]').forEach(d => d.close());
+    dialog.showModal(); document.body.style.overflow = 'hidden';
+    if (focusTarget) focusTarget.focus();
+  }
+  $$('dialog').forEach(dialog => {
+    $('.dialog-close', dialog)?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => { document.body.style.overflow = ''; });
+    dialog.addEventListener('click', event => {
+      const rect = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
+      if (event.target.closest('a')) dialog.close();
+    });
+  });
+  if (menu && typeof menu.showModal === 'function') {
+    $$('.menu-open').forEach(button => { button.hidden = false; button.addEventListener('click', () => { openDialog(menu); track('navigation_open'); }); });
+  }
+  const searchInput = $('#global-search'), searchResults = $('#search-results'), searchStatus = $('#search-status');
+  function runSearch() {
+    const query = (searchInput?.value || '').trim().toLocaleLowerCase();
+    const terms = query.split(/\s+/).filter(Boolean);
+    let matches = data.search.filter(item => terms.every(term => (item.title + ' ' + item.text + ' ' + item.kind).toLocaleLowerCase().includes(term)));
+    if (!terms.length) matches = data.search.filter(item => item.kind === 'Page' || item.kind === 'Document');
+    searchResults.replaceChildren();
+    searchStatus.textContent = query ? `${matches.length} matching ${matches.length === 1 ? 'record' : 'records'}.` : 'Start with a page, or search for a role, award, project, or year.';
+    for (const item of matches.slice(0, 30)) {
+      const a = document.createElement('a'); a.href = item.href;
+      const kind = document.createElement('small'); kind.textContent = item.kind;
+      const title = document.createElement('h3'); title.textContent = item.title;
+      const excerpt = document.createElement('p'); excerpt.textContent = item.text.length > 155 ? item.text.slice(0, 152) + '…' : item.text;
+      a.append(kind, title, excerpt); searchResults.append(a);
+    }
+    if (matches.length > 30) { const note = document.createElement('p'); note.textContent = 'Showing the first 30 matches. Add another word to narrow your search.'; searchResults.append(note); }
+  }
+  if (search && searchInput && typeof search.showModal === 'function') {
+    $$('.search-open').forEach(button => { button.hidden = false; const key = $('kbd', button); if (key && !/Mac|iPhone|iPad/.test(navigator.platform)) key.textContent = 'Ctrl K'; button.addEventListener('click', () => { runSearch(); openDialog(search, searchInput); }); });
+    searchInput.addEventListener('input', runSearch);
+    document.addEventListener('keydown', event => {
+      const typing = event.target.closest('input,textarea,select,[contenteditable="true"]');
+      if (((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') || (event.key === '/' && !typing && !menu?.open)) {
+        event.preventDefault(); runSearch(); openDialog(search, searchInput);
+      }
+    });
   }
 
-  if ("IntersectionObserver" in window) {
-    const active = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a,b) => Math.abs(a.boundingClientRect.top - window.innerHeight * .42) - Math.abs(b.boundingClientRect.top - window.innerHeight * .42));
-      if (!visible.length) return;
-      items.forEach((item) => item.classList.remove("is-active"));
-      visible[0].target.classList.add("is-active");
-    }, { threshold: [0.25,0.55], rootMargin: "-28% 0px -48% 0px" });
-    items.forEach((item) => active.observe(item));
-  }
-
-  let queued = false;
-  const updateProgress = () => {
-    const rect = timeline.getBoundingClientRect();
-    const viewportAnchor = window.innerHeight * .48;
-    const span = Math.max(1, rect.height - 60);
-    const travelled = Math.min(span, Math.max(0, viewportAnchor - rect.top));
-    timeline.style.setProperty("--timeline-progress", (travelled / span).toFixed(4));
+  const header = $('.site-header'), progress = $('.reading-progress');
+  let lastScroll = scrollY, queued = false;
+  const finePointer = matchMedia('(pointer:fine)');
+  function scrollFrame() {
+    const current = scrollY;
+    const range = document.documentElement.scrollHeight - innerHeight;
+    if (progress) progress.style.transform = `scaleX(${range > 0 ? Math.min(1, current / range) : 0})`;
+    header?.classList.toggle('scrolled', current > 40);
+    if (Math.abs(current - lastScroll) > 8 || current < 100) {
+      header?.classList.toggle('header-hidden', current > lastScroll && current > 250 && !header.contains(document.activeElement) && !menu?.open && !search?.open);
+      lastScroll = current;
+    }
+    if (!paused && finePointer.matches && $('.hero') && current < innerHeight * 1.3) document.documentElement.style.setProperty('--hero-offset', `${Math.min(45, current * .06)}px`);
     queued = false;
+  }
+  function queueScroll() { if (!queued) { requestAnimationFrame(scrollFrame); queued = true; } }
+  addEventListener('scroll', queueScroll, { passive: true }); addEventListener('resize', queueScroll); scrollFrame();
+  if ('IntersectionObserver' in window) {
+    const reveal = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        if (paused || typeof entry.target.animate !== 'function') return;
+        const animation = entry.target.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 850, easing: 'cubic-bezier(.22,.8,.22,1)' });
+        animations.push(animation); animation.onfinish = () => { animations = animations.filter(x => x !== animation); };
+      });
+    }, { threshold: .12 });
+    $$('[data-reveal]').forEach(el => reveal.observe(el));
+    const yearNav = $('.year-nav');
+    if (yearNav) {
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries.filter(x => x.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) $$('a', yearNav).forEach(a => { const active = a.hash === '#' + visible[0].target.id; a.classList.toggle('active', active); if(active) a.setAttribute('aria-current','location'); else a.removeAttribute('aria-current'); });
+      }, { rootMargin: '-15% 0px -50% 0px' });
+      $$('.timeline-year').forEach(el => observer.observe(el));
+    }
+  }
+  const filter = $('[data-filter-group="awards"]'), awardRows = $$('.award-row');
+  function filterAwards(category) {
+    let count = 0;
+    awardRows.forEach(row => { const match = category === 'All' || row.dataset.category === category; row.hidden = !match; if (match) count++; });
+    $$('button', filter).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === category)));
+    $('#award-count').textContent = `${count} recognition ${count === 1 ? 'entry' : 'entries'}`;
+  }
+  if (filter) { filter.hidden = false; filterAwards('All'); $$('button',filter).forEach(b => b.addEventListener('click', () => { filterAwards(b.dataset.filter); track('recognition_filter', { category: b.dataset.filter }); })); }
+  function revealFragment() {
+    let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = id && document.getElementById(id);
+    if (!target) return;
+    if (target.matches('.award-row')) { if (filter) filterAwards('All'); target.open = true; }
+    let parent = target.closest('details'); while (parent) { parent.open = true; parent = parent.parentElement.closest('details'); }
+  }
+  addEventListener('hashchange', revealFragment); revealFragment();
+  const skillInput = $('#skill-search'), skillRows = $$('.skill-record');
+  if (skillInput) {
+    $('.skill-controls').hidden = false;
+    const aliases = { 'material-handling':'logistics', organization:'planning', budgeting:'planning', 'problem-solving':'research', advocacy:'communication', 'public-speaking':'communication' };
+    const requested = new URLSearchParams(location.search).get('skill') || '';
+    skillInput.value = aliases[requested] || requested;
+    function filterSkills() {
+      const query = skillInput.value.trim().toLowerCase().replace(/-/g,' '); let count = 0;
+      skillRows.forEach(row => { const match = !query || (row.dataset.skill.replace(/-/g,' ') + ' ' + row.textContent).toLowerCase().includes(query); row.hidden = !match; if(match)count++; });
+      $('#skill-count').textContent = `${count} ${count === 1 ? 'skill' : 'skills'}`; $('#skill-empty').hidden = count !== 0;
+    }
+    skillInput.addEventListener('input', filterSkills); $('#clear-skills').addEventListener('click', () => { skillInput.value='';filterSkills();skillInput.focus(); }); filterSkills();
+  }
+  const copy = $('#copy-email');
+  if (copy && navigator.clipboard && window.isSecureContext) {
+    copy.hidden = false; copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(data.email); $('#copy-status').textContent = 'Email address copied.'; } catch { $('#copy-status').textContent = 'Select the address above to copy it.'; } });
+  }
+  const form = $('#contact-form');
+  if (form) {
+    $('#composer').hidden = false;
+    const params = new URLSearchParams(location.search), topic = params.get('topic');
+    if ([...form.elements.topic.options].some(x => x.value === topic)) form.elements.topic.value = topic;
+    const record = params.get('record');
+    if (record) { const title = data.search.find(x => x.href.endsWith('#' + record))?.title || record.replace(/-/g,' '); form.elements.message.value = `I’d like to request the supporting record for ${title}.\n\n`; }
+    form.addEventListener('submit', event => {
+      event.preventDefault(); if(!form.reportValidity())return;
+      const values = new FormData(form);
+      const subject = `${values.get('topic')} enquiry — ${values.get('name')}`;
+      const body = `Name: ${values.get('name')}\nEmail: ${values.get('email')}\n\n${values.get('message')}`;
+      location.href = `mailto:${data.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      $('#form-status').textContent = 'Email draft requested. If your mail app does not open, copy the address and message into your email service.';
+      track('contact_draft', { topic: values.get('topic') });
+    });
+  }
+  document.addEventListener('click', event => {
+    const a = event.target.closest('a'); if (!a)return;
+    if (a.getAttribute('href')?.endsWith('.pdf'))track('document_download', { document:'experience_profile' });
+  });
+
+  // The playbook is a lesson-design illustration, not a claim that a pilot has taken place.
+  const board = $('.youth-leadership-workshops-detail .project-visual');
+  if (board) {
+    const phases = [
+      { label: 'Listen', title: 'Hear the team first.', text: 'Start with the team’s objective. Make space for every voice before deciding what to do.' },
+      { label: 'Decide', title: 'Make a plan together.', text: 'In the proposed ad activity, small groups have five minutes to agree on an idea, roles, and a 30-second pitch.' },
+      { label: 'Act', title: 'Step into the uncomfortable.', text: 'Groups present their short ad. It is practice in communicating clearly and backing a shared decision.' },
+      { label: 'Reflect', title: 'Learn from what happened.', text: 'Discuss what worked, who participated, and what the group would change on its next attempt.' }
+    ];
+    const flow = document.createElement('section');
+    flow.className = 'workshop-flow';
+    flow.setAttribute('aria-label', 'Workshop learning cycle');
+    flow.innerHTML = '<div class="workshop-flow-heading"><p>Inside the proposed workshop</p><span>Four movements / One team</span></div>' +
+      '<div class="workshop-phases" role="group" aria-label="Explore a workshop phase"></div>' +
+      '<div class="workshop-phase-copy" aria-live="polite"><strong></strong><p></p></div>';
+    const controls = $('.workshop-phases', flow);
+    const phaseTitle = $('.workshop-phase-copy strong', flow);
+    const phaseText = $('.workshop-phase-copy p', flow);
+    const renderPhase = index => {
+      const phase = phases[index];
+      phaseTitle.textContent = phase.title;
+      phaseText.textContent = phase.text;
+      Array.from(controls.querySelectorAll('button')).forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+    };
+    phases.forEach((phase, i) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.innerHTML = '<small>0' + (i + 1) + '</small>' + phase.label;
+      button.setAttribute('aria-pressed', String(i === 0));
+      button.addEventListener('click', () => renderPhase(i));
+      controls.append(button);
+    });
+    renderPhase(0);
+    board.append(flow);
+  }
+
+  // Navigation stays instantaneous when pages are fast. Show an overlay only if a same-site
+  // document navigation has genuinely taken more than 450ms. Do not intercept normal links.
+  const slowNav = document.createElement('div');
+  slowNav.className = 'slow-navigation';
+  slowNav.hidden = true;
+  slowNav.setAttribute('role', 'status');
+  slowNav.setAttribute('aria-live', 'polite');
+  slowNav.innerHTML = '<div class="slow-navigation-inner">' +
+    '<span class="slow-navigation-brand">Dulten <em>Richard.</em></span>' +
+    '<p class="slow-navigation-copy">Opening the next page…</p>' +
+    '<div class="slow-navigation-track" aria-hidden="true"></div>' +
+    '<button type="button">Stay on this page</button>' +
+    '</div>';
+  document.body.append(slowNav);
+  let slowNavTimer = 0;
+  let slowNavGuard = 0;
+  const dismissSlowNav = () => {
+    clearTimeout(slowNavTimer);
+    clearTimeout(slowNavGuard);
+    slowNav.hidden = true;
   };
-  const queueProgress = () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(updateProgress);
-  };
-  window.addEventListener("scroll", queueProgress, { passive: true });
-  window.addEventListener("resize", queueProgress);
-  updateProgress();
+  $('button', slowNav).addEventListener('click', dismissSlowNav);
+  addEventListener('pagehide', dismissSlowNav);
+  addEventListener('pageshow', dismissSlowNav);
+  addEventListener('keydown', event => { if (event.key === 'Escape' && !slowNav.hidden) dismissSlowNav(); });
+  document.addEventListener('click', event => {
+    const a = event.target.closest('a[href]');
+    if (!a || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+      a.hasAttribute('download') || (a.target && a.target !== '_self')) return;
+    let next;
+    try { next = new URL(a.href, location.href); } catch { return; }
+    if (next.origin !== location.origin || next.protocol !== location.protocol ||
+      (next.pathname === location.pathname && next.search === location.search)) return;
+    dismissSlowNav();
+    slowNavTimer = setTimeout(() => { slowNav.hidden = false; }, 450);
+    // A failed or cancelled navigation must never leave the existing page covered.
+    slowNavGuard = setTimeout(dismissSlowNav, 8000);
+  });
+
+
+  /* THE CURRENT: a bespoke navigable canvas rather than an ornamental video. */
+  const currentHero = $('.hero');
+  if (currentHero) {
+    document.body.classList.add('cinematic-home');
+    const scenic = document.createElement('canvas');
+    scenic.className = 'current-field';
+    scenic.setAttribute('aria-hidden', 'true');
+    currentHero.insertBefore(scenic, $('.hero-shade'));
+
+    const ornament = document.createElement('div');
+    ornament.className = 'hero-compass';
+    ornament.setAttribute('aria-hidden','true');
+    ornament.innerHTML = '<span class="compass-ring"><i></i><i></i><i></i><i></i></span><span class="compass-label">DR / 2026</span>';
+    currentHero.append(ornament);
+
+    const notation = document.createElement('div');
+    notation.className = 'hero-notation shell';
+    notation.innerHTML = '<span>01 / Personal record</span><span>Scroll to navigate the current <b aria-hidden="true">↓</b></span>';
+    currentHero.append(notation);
+
+    const waypoint = document.createElement('nav');
+    waypoint.className = 'waypoint-nav';
+    waypoint.setAttribute('aria-label','Navigate homepage chapters');
+    waypoint.innerHTML = '<a href="#top" aria-label="Opening, chapter one"><small>01</small><span>Opening</span></a>' +
+      '<a href="#about" aria-label="About, chapter two"><small>02</small><span>About</span></a>' +
+      '<a href="#experience" aria-label="Highlights, chapter three"><small>03</small><span>Highlights</span></a>' +
+      '<a href="#connect" aria-label="Connect, chapter four"><small>04</small><span>Connect</span></a>';
+    document.body.append(waypoint);
+    const waypointAnchors = Array.from(waypoint.querySelectorAll('a'));
+    const markChapter = (idx) => {
+      waypointAnchors.forEach((a,i)=>{
+        a.classList.toggle('is-active',i===idx);
+        if(i===idx) a.setAttribute('aria-current','location');
+        else a.removeAttribute('aria-current');
+      });
+    };
+    markChapter(0);
+    const chapters = [currentHero,$('#about'),$('#experience'),$('#connect')].filter(Boolean);
+    if('IntersectionObserver' in window){
+      const chapterObserver=new IntersectionObserver(()=>{
+        let active = 0, near = Infinity;
+        chapters.forEach((el,i)=>{
+          const rect=el.getBoundingClientRect();
+          const distance=Math.abs(rect.top - innerHeight*.35);
+          if(rect.bottom>innerHeight*.2 && distance<near){near=distance;active=i;}
+        });
+        markChapter(active);
+      },{threshold:[0,.15,.4,.75],rootMargin:'-18% 0px -55% 0px'});
+      chapters.forEach(el=>chapterObserver.observe(el));
+    }
+
+    // Visible content is still genuine HTML if scripting or animation is unavailable.
+    // The canvas uses deterministic seeded particles and a moving current / chart geometry.
+    const ctx=scenic.getContext('2d',{alpha:true});
+    if(ctx){
+      let width=1,height=1,dpr=1,frame=0,raf=0,last=0,visible=true,now=0;
+      let target={x:.69,y:.48},pointer={x:.69,y:.48},nodes=[];
+      const random = (n)=>{const s=Math.sin(n*127.1+78.233)*43758.5453123;return s-Math.floor(s);};
+      const resize=()=>{
+        const box=currentHero.getBoundingClientRect();
+        width=Math.max(1,Math.floor(box.width));height=Math.max(1,Math.floor(box.height));
+        dpr=Math.min(devicePixelRatio||1,1.75);
+        scenic.width=Math.floor(width*dpr);scenic.height=Math.floor(height*dpr);
+        scenic.style.width=width+'px';scenic.style.height=height+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        const count = width < 680 ? 44 : 100;
+        nodes=Array.from({length:count},(_,i)=>({
+          x:random(i*7.4+1.1), y:random(i*8.7+4.9), z:.25+random(i*5.1+1.9)*.75,
+          phase:random(i*6.5)*Math.PI*2
+        }));
+        paint(now);
+      };
+      const flowY=(x,i,t)=>height*(.18+.64*nodes[i].y)+Math.sin(x*.004+nodes[i].phase+t*(.16+nodes[i].z*.12))*height*.016;
+      const paint=(t)=>{
+        ctx.clearRect(0,0,width,height);
+        ctx.globalCompositeOperation='screen';
+        // Layered luminous drift-lines, like measured currents on a navigation chart.
+        for(let l=0;l<11;l++){
+          const baseline=height*(.17+l*.067);
+          const offset=l*1.4;
+          ctx.beginPath();
+          for(let x=-20;x<=width+28;x+=28){
+            const y=baseline+Math.sin(x*.0045+offset+t*.15)*height*.024+
+              Math.cos(x*.0018+offset*.71-t*.09)*height*.011;
+            if(x===-20)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+          }
+          ctx.strokeStyle=l%3===0?'rgba(215,189,143,.18)':'rgba(137,182,199,.14)';
+          ctx.lineWidth=l%4===0?1.1:.55;ctx.stroke();
+        }
+        pointer.x+=(target.x-pointer.x)*.035;
+        pointer.y+=(target.y-pointer.y)*.035;
+        const cursorX=pointer.x*width,cursorY=pointer.y*height;
+        const aura=ctx.createRadialGradient(cursorX,cursorY,0,cursorX,cursorY,width*.29);
+        aura.addColorStop(0,'rgba(200,197,172,.075)');
+        aura.addColorStop(1,'rgba(200,197,172,0)');
+        ctx.fillStyle=aura;ctx.fillRect(0,0,width,height);
+        for(let i=0;i<nodes.length;i++){
+          const n=nodes[i];
+          let x=((n.x*width+t*(3+n.z*5))%(width+60))-30;
+          let y=flowY(x,i,t);
+          const dist=Math.hypot(x-cursorX,y-cursorY);
+          const brighten=Math.max(0,1-dist/(width*.26));
+          ctx.beginPath();ctx.arc(x,y,.45+n.z*.85+brighten*.65,0,Math.PI*2);
+          ctx.fillStyle=(i%8===0)?'rgba(239,216,171,'+(.24+n.z*.45)+')':'rgba(190,218,222,'+(.10+n.z*.28+brighten*.2)+')';
+          ctx.fill();
+          if(i%7===0){
+            ctx.beginPath();ctx.moveTo(x-19*n.z,y+1);ctx.lineTo(x-3*n.z,y);
+            ctx.strokeStyle='rgba(232,220,200,'+(.06+n.z*.13)+')';ctx.lineWidth=.65;ctx.stroke();
+          }
+        }
+        ctx.globalCompositeOperation='source-over';
+      };
+      const animate=(time)=>{
+        raf=0;if(paused||!visible||document.hidden)return;
+        if(time-last < 32){raf=requestAnimationFrame(animate);return;}
+        last=time;now=time*.001;paint(now);raf=requestAnimationFrame(animate);
+      };
+      const play=()=>{
+        if(paused || !visible || document.hidden){
+          cancelAnimationFrame(raf);raf=0;paint(now);
+        } else if(!raf)raf=requestAnimationFrame(animate);
+      };
+      currentHero.addEventListener('pointermove',event=>{
+        if(event.pointerType==='touch')return;
+        const box=currentHero.getBoundingClientRect();
+        target.x=Math.max(0,Math.min(1,(event.clientX-box.left)/box.width));
+        target.y=Math.max(0,Math.min(1,(event.clientY-box.top)/box.height));
+        currentHero.style.setProperty('--cursor-x',(target.x*100).toFixed(2)+'%');
+        currentHero.style.setProperty('--cursor-y',(target.y*100).toFixed(2)+'%');
+      },{passive:true});
+      currentHero.addEventListener('pointerleave',()=>{
+        target={x:.69,y:.48};
+      });
+      if('IntersectionObserver' in window){
+        const observer=new IntersectionObserver(entries=>{
+          visible=entries[0].isIntersecting;play();
+        },{threshold:0});
+        observer.observe(currentHero);
+      }
+      if('ResizeObserver' in window){
+        const obs=new ResizeObserver(()=>resize());obs.observe(currentHero);
+      } else addEventListener('resize',resize,{passive:true});
+      document.addEventListener('visibilitychange',play);
+      motionButton?.addEventListener('click',()=>requestAnimationFrame(play));
+      reduced.addEventListener('change',()=>requestAnimationFrame(play));
+      resize();play();
+    }
+    // Motions only decorate already-visible information.
+    if('IntersectionObserver' in window){
+      const emerge=new IntersectionObserver((entries,observer)=>{
+        entries.forEach(entry=>{
+          if(!entry.isIntersecting)return;
+          entry.target.classList.add('chapter-seen');observer.unobserve(entry.target);
+        });
+      },{threshold:.12});
+      Array.from(document.querySelectorAll('.about-section,.signature-highlights,.closing-chapter'))
+        .forEach(el=>emerge.observe(el));
+    }
+  }
+
+
+  /* An interactive, three-act narrative — no additional résumé content. */
+  const spotlight=$('[data-spotlight]');
+  if(spotlight){
+    const triggers=Array.from(spotlight.querySelectorAll('[data-spotlight-select]'));
+    const panels=Array.from(spotlight.querySelectorAll('[data-spotlight-panel]'));
+    const sceneLabels=['LEADERSHIP / 2021—','COMMUNITY / 205 HOURS','DEVELOPMENT / 2025—26'];
+    let active=0;
+    const setSpotlight=(index,focus=false)=>{
+      active=(index+triggers.length)%triggers.length;
+      spotlight.dataset.active=String(active);
+      triggers.forEach((trigger,i)=>{
+        const selected=i===active;
+        trigger.setAttribute('aria-pressed',String(selected));
+        trigger.classList.toggle('is-active',selected);
+        if(focus&&selected)trigger.focus();
+      });
+      panels.forEach((panel,i)=>{
+        panel.hidden=i!==active;
+        panel.classList.toggle('is-active',i===active);
+      });
+      const label=$('[data-spotlight-number]',spotlight);
+      if(label)label.textContent=String(active+1).padStart(2,'0');
+      spotlight.style.setProperty('--act',String(active));
+      spotlight.setAttribute('aria-label','Selected record: '+sceneLabels[active]);
+    };
+    triggers.forEach((trigger,i)=>{
+      trigger.addEventListener('click',()=>setSpotlight(i));
+      trigger.addEventListener('keydown',event=>{
+        if(event.key==='ArrowRight'||event.key==='ArrowDown'){
+          event.preventDefault();setSpotlight(active+1,true);
+        }else if(event.key==='ArrowLeft'||event.key==='ArrowUp'){
+          event.preventDefault();setSpotlight(active-1,true);
+        }else if(event.key==='Home'){event.preventDefault();setSpotlight(0,true);}
+        else if(event.key==='End'){event.preventDefault();setSpotlight(triggers.length-1,true);}
+      });
+    });
+    let swipe=0;
+    spotlight.addEventListener('touchstart',event=>{swipe=event.changedTouches[0]?.screenX??0;},{passive:true});
+    spotlight.addEventListener('touchend',event=>{
+      const delta=(event.changedTouches[0]?.screenX??swipe)-swipe;
+      if(Math.abs(delta)>65)setSpotlight(active+(delta<0?1:-1));
+    },{passive:true});
+    setSpotlight(0);
+
+    // Subtle chartlike light field. Canvas is decoration; all content exists in HTML.
+    const canvas=$('.spotlight-canvas',spotlight) || document.createElement('canvas');
+    if(!canvas.isConnected){canvas.className='spotlight-canvas';canvas.setAttribute('aria-hidden','true');spotlight.prepend(canvas);}
+    const context=canvas.getContext('2d');
+    if(context){
+      let width=1,height=1,ratio=1,raf=0,onscreen=true,last=0,phase=0;
+      const fit=()=>{
+        const rect=spotlight.getBoundingClientRect();
+        width=Math.max(1,Math.round(rect.width));
+        height=Math.max(1,Math.round(rect.height));
+        ratio=Math.min(devicePixelRatio||1,1.5);
+        canvas.width=Math.round(width*ratio);
+        canvas.height=Math.round(height*ratio);
+        context.setTransform(ratio,0,0,ratio,0,0);
+        draw(phase);
+      };
+      const draw=(t)=>{
+        context.clearRect(0,0,width,height);
+        const focusX=width*(.7-active*.07),focusY=height*.52;
+        const spread=Math.min(width,height)*.35;
+        const light=context.createRadialGradient(focusX,focusY,2,focusX,focusY,spread);
+        light.addColorStop(0,['rgba(225,210,168,.095)','rgba(175,220,212,.10)','rgba(189,199,235,.10)'][active]);
+        light.addColorStop(1,'rgba(220,230,226,0)');
+        context.fillStyle=light;context.fillRect(0,0,width,height);
+        for(let n=0;n<14;n++){
+          const y=height*(.12+n*.057);
+          context.beginPath();
+          for(let x=0;x<=width+24;x+=24){
+            const wave=Math.sin(x*.006+n*.47+t*.16)*12+Math.cos(x*.0026+n*.85-t*.10)*9;
+            if(x===0)context.moveTo(x,y+wave);else context.lineTo(x,y+wave);
+          }
+          context.lineWidth=.58;
+          context.strokeStyle=n%3===0?'rgba(213,194,153,.13)':'rgba(165,202,197,.095)';
+          context.stroke();
+        }
+        for(let n=0;n<30;n++){
+          const a=n*2.39996+t*.13,rad=Math.sqrt(n/30)*spread*.9;
+          const x=focusX+Math.cos(a)*rad,y=focusY+Math.sin(a)*rad*.62;
+          context.beginPath();context.arc(x,y,n%9===0?1.4:.65,0,Math.PI*2);
+          context.fillStyle=n%5===0?'rgba(235,214,163,.48)':'rgba(201,219,209,.25)';
+          context.fill();
+        }
+      };
+      const frame=(ts)=>{
+        raf=0;
+        if(paused||reduced.matches||document.hidden||!onscreen)return;
+        if(ts-last>=33){last=ts;phase=ts*.001;draw(phase);}
+        raf=requestAnimationFrame(frame);
+      };
+      const resume=()=>{
+        if(paused||reduced.matches||document.hidden||!onscreen){cancelAnimationFrame(raf);raf=0;draw(phase);}
+        else if(!raf)raf=requestAnimationFrame(frame);
+      };
+      if('ResizeObserver' in window)new ResizeObserver(fit).observe(spotlight);
+      else addEventListener('resize',fit,{passive:true});
+      if('IntersectionObserver' in window)new IntersectionObserver(e=>{onscreen=e[0].isIntersecting;resume();}).observe(spotlight);
+      document.addEventListener('visibilitychange',resume);
+      motionButton?.addEventListener('click',()=>requestAnimationFrame(resume));
+      reduced.addEventListener('change',resume);
+      triggers.forEach(btn=>btn.addEventListener('click',()=>draw(phase)));
+      fit();resume();
+    }
+  }
+
 })();

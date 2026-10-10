@@ -1,0 +1,10 @@
+{
+  "name": "dulten-richard-site-preview",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local and StackBlitz review of a generated static personal website.",
+  "scripts": {
+    "dev": "node scripts/preview-server.mjs"
+  }
+}

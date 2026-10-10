@@ -1,13 +1,8 @@
-name: Notify IndexNow
-
+# Publication now occurs in the separate root Pages host. Do not announce
+# a source-branch push before the public content is actually deployed.
+name: Notify IndexNow (manual)
 on:
-  push:
-    branches: [main]
-    paths:
-      - "**.html"
-      - "sitemap.xml"
-      - "robots.txt"
-      - "data/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -16,25 +11,8 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for GitHub Pages deployment
-        run: sleep 45
-
-      - name: Notify IndexNow
-        env:
-          INDEXNOW_KEY: c8197b3d20805844987f1b06cde33623
-        run: |
-          curl --fail-with-body --retry 3 --retry-delay 10             -H "Content-Type: application/json; charset=utf-8"             -d '{
-              "host": "dultenrichard.github.io",
-              "key": "'"$INDEXNOW_KEY"'",
-              "keyLocation": "https://dultenrichard.github.io/'"$INDEXNOW_KEY"'.txt",
-              "urlList": [
-                "https://dultenrichard.github.io/",
-                "https://dultenrichard.github.io/experience/",
-                "https://dultenrichard.github.io/skills/",
-                "https://dultenrichard.github.io/awards/",
-                "https://dultenrichard.github.io/sources/",
-                "https://dultenrichard.github.io/contact/",
-                "https://dultenrichard.github.io/privacy/",
-                "https://dultenrichard.github.io/sitemap.xml"
-              ]
-            }'             https://api.indexnow.org/indexnow
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python scripts/submit_indexnow.py

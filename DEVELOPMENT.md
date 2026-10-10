@@ -1,25 +1,16 @@
-# Development workflow
+# Development
 
-This repository uses two long-lived branches:
+The current redesign branch is `redesign/editorial-record`; main remains unchanged pending review. Existing development branches remain available. Do not deploy root-relative routes under the old `/brand/` project host.
 
-- **main** — production. The public GitHub Pages website is treated as live from this branch.
-- **dev** — development/staging source. New website work should be committed here first.
+## Content workflow
 
-## Normal workflow
+1. Reconcile factual changes with the owner's latest corrections; record provenance in docs/CONTENT-AUDIT.md.
+2. Edit data/profile.json. Award attachment paths live in data/awards.json. Public source descriptions live in data/references.json.
+3. Run `python scripts/build_site.py` to regenerate pages and search data.
+4. Run `python scripts/build_experience_pdf.py` with ReportLab and pypdf installed when profile content changes. Render all PDF pages and inspect layout.
+5. Run `python scripts/validate_site.py`, `python scripts/check_links.py --report docs/link-report.json`, and `node --check site.js`.
+6. Commit source and generated output together. Review in the private Site and draft PR before changing production.
 
-1. Make changes on `dev`.
-2. Push and let the **Validate website** GitHub Action run.
-3. Test the changed pages.
-4. Open a pull request from `dev` into `main`.
-5. Review the diff and validation result.
-6. Merge only when the change is ready for the public website.
+The website is buildless at runtime. The HTML renderer uses Python's standard library. JavaScript progressively enhances content; no external framework is required. Never add private credentials or unpublished evidence to the public data files.
 
-Do not use `main` for experiments.
-
-## Rollback
-
-If a production change causes a problem, revert the merge/commit on `main` or restore the previous known-good commit. Development can continue independently on `dev`.
-
-## Clean-root migration
-
-The new website version uses root-relative navigation (`/`, `/experience/`, `/awards/`, etc.) and canonical URLs at `https://dultenrichard.github.io/`. GitHub Pages serves this root from a user-site repository named `dultenrichard.github.io` (or via a configured custom domain). Do not merge this root-routed version into the old `brand` project site's production `main` before hosting migration, since absolute paths would otherwise point away from `/brand/`. Preview is isolated in `preview-pull-7`.
+See docs/DESIGN-SYSTEM.md for motion, privacy, asset provenance, and verification limitations; docs/DEPLOYMENT.md for root-host migration.

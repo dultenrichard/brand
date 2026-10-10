@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+<title id="title">Team movement and decision-making playbook</title>
+<desc id="desc">An original overhead coaching diagram with four linked phases, teammates, a common goal, and planned movement routes.</desc>
+<defs>
+  <pattern id="graph" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#638297" stroke-opacity=".105" stroke-width="1"/></pattern>
+  <linearGradient id="board" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#152B36"/><stop offset=".65" stop-color="#10212B"/><stop offset="1" stop-color="#0A1720"/></linearGradient>
+  <radialGradient id="focus"><stop stop-color="#CFB894" stop-opacity=".22"/><stop offset="1" stop-color="#CFB894" stop-opacity="0"/></radialGradient>
+  <filter id="halo"><feGaussianBlur stdDeviation="16"/></filter>
+  <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#CFB894" stroke-width="1.5"/></marker>
+</defs>
+<rect width="960" height="600" rx="8" fill="url(#board)"/>
+<rect width="960" height="600" fill="url(#graph)"/>
+<path d="M32 32h896v536H32z" fill="none" stroke="#D7DDD8" stroke-opacity=".28" stroke-width="1.5"/>
+<path d="M82 82H878V518H82z" fill="none" stroke="#D7DDD8" stroke-opacity=".15" stroke-dasharray="5 11"/>
+<path d="M480 82V518" stroke="#D7DDD8" stroke-opacity=".11" stroke-width="1.5"/>
+<circle cx="480" cy="300" r="156" fill="none" stroke="#D7DDD8" stroke-opacity=".12" stroke-width="2"/>
+<circle cx="480" cy="300" r="83" fill="none" stroke="#D7DDD8" stroke-opacity=".17"/>
+<path d="M82 228h90v144H82M878 228h-90v144h90" fill="none" stroke="#D7DDD8" stroke-opacity=".2" stroke-width="1.5"/>
+<ellipse cx="500" cy="282" rx="210" ry="153" fill="url(#focus)"/>
+<path d="M190 391C240 324 292 302 359 269S484 236 560 266 675 342 758 234" fill="none" stroke="#CDB58C" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 13" marker-end="url(#arrow)"/>
+<path d="M285 178C330 150 399 167 442 197M364 418C426 447 503 444 552 402M605 179C661 195 687 228 708 278" fill="none" stroke="#96B5C2" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 9"/>
+<g font-family="Arial,Helvetica,sans-serif" text-anchor="middle">
+ <g><circle cx="190" cy="391" r="35" fill="#102632" stroke="#E7D4AC" stroke-width="2.3"/><circle cx="190" cy="391" r="41" fill="none" stroke="#E7D4AC" stroke-opacity=".3"/><text x="190" y="398" font-size="20" fill="#FFF6DF">01</text></g>
+ <g><circle cx="359" cy="269" r="35" fill="#173743" stroke="#B0C8CF" stroke-width="2.3"/><circle cx="359" cy="269" r="41" fill="none" stroke="#B0C8CF" stroke-opacity=".3"/><text x="359" y="276" font-size="20" fill="#EBF2F1">02</text></g>
+ <g><circle cx="560" cy="266" r="35" fill="#173743" stroke="#B0C8CF" stroke-width="2.3"/><circle cx="560" cy="266" r="41" fill="none" stroke="#B0C8CF" stroke-opacity=".3"/><text x="560" y="273" font-size="20" fill="#EBF2F1">03</text></g>
+ <g><circle cx="758" cy="234" r="35" fill="#423F34" stroke="#E7D4AC" stroke-width="2.3"/><circle cx="758" cy="234" r="41" fill="none" stroke="#E7D4AC" stroke-opacity=".3"/><text x="758" y="241" font-size="20" fill="#FFF6DF">04</text></g>
+</g>
+<g fill="none" stroke="#96B5C2" stroke-opacity=".75" stroke-width="1.5"><circle cx="285" cy="178" r="11"/><path d="M285 160v36m-18-18h36"/><circle cx="364" cy="418" r="11"/><path d="M364 400v36m-18-18h36"/><circle cx="605" cy="179" r="11"/><path d="M605 161v36m-18-18h36"/></g>
+<g font-family="Arial,Helvetica,sans-serif" letter-spacing="3" font-size="12" fill="#C7D9DE">
+ <text x="61" y="62">YOUTH LEADERSHIP / FIELD NOTES</text>
+ <text x="61" y="549" fill="#CFB894">A TEAM IS A SERIES OF DECISIONS.</text>
+ <text x="785" y="549">01 / 04</text>
+</g>
+<g stroke="#CFB894" stroke-width="1.5"><path d="M853 41h46M899 41v46"/></g>
+</svg>
