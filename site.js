@@ -439,7 +439,7 @@
           entry.target.classList.add('chapter-seen');observer.unobserve(entry.target);
         });
       },{threshold:.12});
-      $('.about-section,.selected-work,.manifesto-interlude,.project-chapter,.quote-chapter,.archive-invite')
+      Array.from(document.querySelectorAll('.about-section,.selected-work,.manifesto-interlude,.project-chapter,.quote-chapter,.archive-invite'))
         .forEach(el=>emerge.observe(el));
     }
   }
