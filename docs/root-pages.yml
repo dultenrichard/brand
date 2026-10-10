@@ -34,7 +34,7 @@ jobs:
       - name: Package public files only
         run: |
           mkdir _site
-          cp -R *.html *.css *.js *.png *.webp robots.txt sitemap.xml llms.txt data assets experience skills awards sources contact privacy timeline brand _site/
+          cp -R *.html *.css *.js *.png *.webp robots.txt sitemap.xml llms.txt data assets experience skills awards sources contact privacy timeline projects brand _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -49,3 +49,8 @@ Follow `docs/DEPLOYMENT.md`. The root host repository must be created and Pages 
 ## Changed file groups
 
 Homepage; shared editorial stylesheet and JavaScript; primary experience/skills/awards/sources/contact/privacy pages; 2019–2026 year pages and new timeline index; useful existing 404 page styling; sitemap; award gallery data; link checker; CI artifact/check configuration; root deployment template and review/diagnosis/reports. Existing styles.css remains as the base, with the new design in editorial.css to preserve established component behavior.
+
+
+## Quiet personal revision
+
+The homepage now begins with only the name, location, and authentic portrait. A short personal note follows, then three links into the full record. Plain secondary headings, a native More menu, self-hosted Newsreader, and a projects page replace the campaign-like structure. See [DESIGN-RESEARCH.md](DESIGN-RESEARCH.md) for research, source boundaries, and validation limitations. Private preview: https://dulten-editorial-review.dulten.chatgpt.site/?revision=3 .
