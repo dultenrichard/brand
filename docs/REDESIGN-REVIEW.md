@@ -4,7 +4,7 @@
 
 Source: https://github.com/dultenrichard/dultenrichard, public, `main`.
 Baseline: `a0f84be5909dcc2a9e337a0ed69d0eca6f280468` (Release verified timeline site and root-route migration).
-Branch: `redesign/editorial-record`. All existing branches and history retained; production main untouched.
+Branch: `redesign/editorial-record`. Draft PR: https://github.com/dultenrichard/dultenrichard/pull/9. GitHub Validate website run 79 succeeded. All existing branches and history retained; production main untouched.
 Owner-private review: https://dulten-editorial-review.dulten.chatgpt.site
 
 ## Design research
