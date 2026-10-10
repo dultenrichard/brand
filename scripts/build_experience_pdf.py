@@ -31,7 +31,7 @@ add('I completed CAP 1 in 2022 and CAP 2 in summer 2023, then qualified as a Fit
 add('At 661 Squadron’s Annual Ceremonial Review on June 2, 2026, I received the Lord Strathcona Medal, Air Cadet Service Medal, Top Cadet Instructor, and Best Physical Fitness recognition. I also took part in the May 2026 CAF engagement at Petawawa.')
 add('Employment','h')
 for heading,text in [
- ('Value Village / Sales Clerk / Brockville / June 2026-present','Retail work and customer service.'),
+ ('Value Village / Community Donation Centre Ambassador / Brockville','April 2026-present; promoted from Sales Clerk in September 2026. I help donors at drop-off, receive and move donated goods, support donation flow, and keep the donation area organised and safe.'),
  ('A&amp;W / Cross-trained team member / Brockville','Experience working across restaurant duties and serving customers.'),
  ('Currah’s Park Store &amp; Grill / Picton / July 2023-October 2024','Front- and back-of-house work in a seasonal hospitality setting.'),
  ('Sunflower Fields / Prince Edward County / June-August 2023','Cashier and ice cream service.')]:add(heading,'sub');add(text)
