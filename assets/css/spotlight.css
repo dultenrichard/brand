@@ -207,9 +207,9 @@ body.home{background:var(--sr-cream);overflow-x:clip}
 .spotlight-panels{position:relative;z-index:3;min-width:0;min-height:470px;display:flex;align-items:center}
 .spotlight-panel{width:100%;padding-top:30px}
 .spotlight-panel[hidden]{display:none!important}
-.spotlight:not(.spotlight-ready) .spotlight-panel{display:block!important;border-bottom:1px solid #ffffff40;padding-block:22px}
-.spotlight:not(.spotlight-ready) .spotlight-panels{display:block}
-.spotlight:not(.spotlight-ready) .spotlight-controls{display:none}
+.spotlight-stage:not(.spotlight-ready) .spotlight-panel{display:block!important;border-bottom:1px solid #ffffff40;padding-block:22px}
+.spotlight-stage:not(.spotlight-ready) .spotlight-panels{display:block}
+.spotlight-stage:not(.spotlight-ready) .spotlight-controls{display:none}
 .spotlight-panel.is-active{view-transition-name:spotlight-copy;animation:chapter-rise .75s var(--sr-ease) both}
 .spotlight-panel .eyebrow{font:10px/1.5 var(--sans);letter-spacing:.15em;color:var(--stage-gold);text-transform:uppercase;margin-bottom:32px}
 .spotlight-panel h3{
