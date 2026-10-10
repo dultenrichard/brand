@@ -93,7 +93,7 @@
     }
     if (matches.length > 30) { const note = document.createElement('p'); note.textContent = 'Showing the first 30 matches. Add another word to narrow your search.'; searchResults.append(note); }
   }
-  if (search && $$('.search-open').length && typeof search.showModal === 'function') {
+  if (search && searchInput && typeof search.showModal === 'function') {
     $$('.search-open').forEach(button => { button.hidden = false; const key = $('kbd', button); if (key && !/Mac|iPhone|iPad/.test(navigator.platform)) key.textContent = 'Ctrl K'; button.addEventListener('click', () => { runSearch(); openDialog(search, searchInput); }); });
     searchInput.addEventListener('input', runSearch);
     document.addEventListener('keydown', event => {
@@ -430,6 +430,52 @@
       Array.from(document.querySelectorAll('.about-section,.signature-highlights,.closing-chapter'))
         .forEach(el=>emerge.observe(el));
     }
+  }
+
+
+  /* An interactive, three-act narrative — no additional résumé content. */
+  const spotlight=$('[data-spotlight]');
+  if(spotlight){
+    const triggers=$('[data-spotlight-select]',spotlight);
+    const panels=$('[data-spotlight-panel]',spotlight);
+    const sceneLabels=['LEADERSHIP / 2021—','COMMUNITY / 205 HOURS','DEVELOPMENT / 2025—26'];
+    let active=0;
+    const setSpotlight=(index,focus=false)=>{
+      active=(index+triggers.length)%triggers.length;
+      spotlight.dataset.active=String(active);
+      triggers.forEach((trigger,i)=>{
+        const selected=i===active;
+        trigger.setAttribute('aria-pressed',String(selected));
+        trigger.classList.toggle('is-active',selected);
+        if(focus&&selected)trigger.focus();
+      });
+      panels.forEach((panel,i)=>{
+        panel.hidden=i!==active;
+        panel.classList.toggle('is-active',i===active);
+      });
+      const label=$('[data-spotlight-number]',spotlight);
+      if(label)label.textContent=String(active+1).padStart(2,'0');
+      spotlight.style.setProperty('--act',String(active));
+      spotlight.setAttribute('aria-label','Selected record: '+sceneLabels[active]);
+    };
+    triggers.forEach((trigger,i)=>{
+      trigger.addEventListener('click',()=>setSpotlight(i));
+      trigger.addEventListener('keydown',event=>{
+        if(event.key==='ArrowRight'||event.key==='ArrowDown'){
+          event.preventDefault();setSpotlight(active+1,true);
+        }else if(event.key==='ArrowLeft'||event.key==='ArrowUp'){
+          event.preventDefault();setSpotlight(active-1,true);
+        }else if(event.key==='Home'){event.preventDefault();setSpotlight(0,true);}
+        else if(event.key==='End'){event.preventDefault();setSpotlight(triggers.length-1,true);}
+      });
+    });
+    let swipe=0;
+    spotlight.addEventListener('touchstart',event=>{swipe=event.changedTouches[0]?.screenX??0;},{passive:true});
+    spotlight.addEventListener('touchend',event=>{
+      const delta=(event.changedTouches[0]?.screenX??swipe)-swipe;
+      if(Math.abs(delta)>65)setSpotlight(active+(delta<0?1:-1));
+    },{passive:true});
+    setSpotlight(0);
   }
 
 })();
