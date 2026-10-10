@@ -555,3 +555,51 @@ body:not(.home) .page-mast .mast-bottom{margin-top:55px}
   .signature-highlights{padding-block:45px}
   .signature-item{break-inside:avoid}
 }
+
+
+/* ACTUAL INTERACTION — three selected stories, one kinetic stage.
+   Carefully bounded to the focused public homepage. */
+.spotlight-stage{--act:0;position:relative;isolation:isolate;overflow:hidden}
+.spotlight-aura{transform:translate3d(calc(var(--act) * -1.8%),calc(var(--act) * 2.5%),0) rotate(calc(var(--act) * 38deg));transition:transform 1.3s cubic-bezier(.19,1,.22,1),filter 1.3s ease;filter:hue-rotate(calc(var(--act) * 33deg))}
+.spotlight-figure{transform:translateY(calc(var(--act) * -9px));transition:transform 1.2s cubic-bezier(.19,1,.22,1)}
+.spotlight-emblem{transform:rotate(calc(var(--act) * 55deg));transition:transform 1.5s cubic-bezier(.19,1,.22,1)}
+.spotlight-panel{animation:spotlight-entrance .8s cubic-bezier(.19,1,.22,1) both}
+.spotlight-panel[hidden]{display:none!important}
+.spotlight-select{transition:opacity .5s,transform .6s cubic-bezier(.19,1,.22,1),background .4s}
+.spotlight-select[aria-pressed="true"]{opacity:1;transform:translateX(9px)}
+.spotlight-select[aria-pressed="false"]{opacity:.5}
+.spotlight-select:hover,.spotlight-select:focus-visible{opacity:1}
+.spotlight-select:focus-visible{outline:2px solid #e6cda1;outline-offset:5px}
+.spotlight-track span:last-child{letter-spacing:.35em}
+.spotlight-stage::after{
+  content:"";position:absolute;right:6%;top:6%;width:1px;height:22%;
+  background:linear-gradient(transparent,#d4d7c48a,transparent);pointer-events:none
+}
+.spotlight-aura::after{
+  content:"";position:absolute;inset:27%;border:1px dashed #d5b88869;border-radius:50%;
+  animation:orbit-drift 28s linear infinite
+}
+@keyframes spotlight-entrance{from{opacity:0;transform:translateY(26px);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes orbit-drift{to{transform:rotate(360deg)}}
+.home .hero::before{
+  background:radial-gradient(ellipse at var(--cursor-x,70%) var(--cursor-y,45%),#b4d4cd24,transparent 28%),
+  linear-gradient(90deg,#0710199e,transparent 78%),linear-gradient(0deg,#071019af,transparent 48%)
+}
+.hero-compass{mix-blend-mode:screen;filter:drop-shadow(0 0 30px #d6b9803c)}
+.home .hero-content{mix-blend-mode:normal}
+.home .hero h1 em{text-shadow:0 8px 42px #07101977}
+.home .hero-discover{filter:drop-shadow(0 0 25px #c7d4d32d)}
+.home .about-section .portrait{transform:rotate(-2deg);transition:transform 1s cubic-bezier(.19,1,.22,1)}
+.home .about-section .portrait:hover{transform:rotate(0) translateY(-9px)}
+.closing-chapter::after{opacity:.18}
+@media(max-width:700px){
+  .spotlight-select[aria-pressed="true"]{transform:translateX(3px)}
+  .spotlight-aura{opacity:.7}
+  .home .about-section .portrait{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .spotlight-aura,.spotlight-emblem,.spotlight-figure,.spotlight-select,.spotlight-panel,.home .about-section .portrait{animation:none!important;transition:none!important}
+  .spotlight-aura::after{animation:none!important}
+}
+.motion-paused .spotlight-aura,.motion-paused .spotlight-emblem,.motion-paused .spotlight-figure,.motion-paused .spotlight-select,.motion-paused .spotlight-panel{animation:none!important;transition:none!important}
+.motion-paused .spotlight-aura::after{animation:none!important}
