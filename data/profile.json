@@ -204,11 +204,11 @@
       ]
     },
     {
-      "id": "leadership-lab",
-      "name": "Leadership Lab",
-      "type": "Youth leadership workshops",
+      "id": "youth-leadership-workshops",
+      "name": "Youth Leadership Workshops",
+      "type": "Business project",
       "status": "In development · First pilot being planned",
-      "body": "A practical, 45–60 minute workshop for youth sports teams. I’m adapting cadet peer-leadership and group-dynamics lessons into activities about communication, teamwork, and confidence.",
+      "body": "I’m developing a business offering practical, 45–60 minute leadership workshops for youth sports teams. I’m adapting cadet peer-leadership and group-dynamics lessons into activities about communication, teamwork, and confidence.",
       "steps": [
         {
           "title": "Lesson design",
@@ -600,8 +600,8 @@
           "href": "/experience/#cadets"
         },
         {
-          "text": "Leadership Lab",
-          "href": "/projects/#leadership-lab"
+          "text": "Youth Leadership Workshops",
+          "href": "/projects/#youth-leadership-workshops"
         }
       ]
     },

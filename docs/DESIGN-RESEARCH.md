@@ -52,7 +52,7 @@ Steph Ango’s essay https://stephango.com/style also informed the choice to kee
 - The existing cadet, work, school, service, advocacy, and sport records remain intact.
 - The 2019 4-H story names Dulten and his Maple Syrup and Pizza clubs: https://www.countylive.ca/4-h-awards-showcase-local-youth-achievements/ .
 - The existing official rowing result is supported by https://rccdn.cachefly.net/results/10134_216c448c-b94e-45cb-b720-9f36e2c6f6d0.pdf . Do not infer overall placing from heat sheets.
-- Grade 12, political science and international affairs interests, Equinox, and the Leadership Lab concept derive from shared personal context and the existing record. Leadership Lab is described as in development, with no delivered workshop claim.
+- Grade 12, political science and international affairs interests, Equinox, and the Youth Leadership Workshops concept derive from shared personal context and the existing record. Youth Leadership Workshops is described as in development, with no delivered workshop claim.
 - Cadet experience is not described as Canadian Armed Forces employment. COSSA rugby remains silver, not a championship. Awards and qualifications stay attached to their actual records.
 - No private family, health, housing, financial details, manufactured endorsements, generated likenesses, or stock lifestyle photos were introduced.
 

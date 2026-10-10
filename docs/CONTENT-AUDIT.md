@@ -25,6 +25,6 @@ The newer LinkedIn conversation and explicit corrections take precedence over th
 | COSSA rugby | Silver, 2025 |
 | Bright Future | May 2025 nomination |
 
-Equinox is preparation toward 2027, not a completed expedition. Leadership Lab is in development; proposed trials do not imply a confirmed partner or delivered workshop. Dulten confirms he holds copies or proof of each award. The public attachment registry remains empty where files have not been supplied for publication.
+Equinox is preparation toward 2027, not a completed expedition. Youth Leadership Workshops is in development; proposed trials do not imply a confirmed partner or delivered workshop. Dulten confirms he holds copies or proof of each award. The public attachment registry remains empty where files have not been supplied for publication.
 
 Only public-facing biographical information is included. Private address, phone number, family circumstances, health, and financial information are excluded. Public Instagram uses the newer @dultenrp handle. Website content is a reviewed snapshot, not a live LinkedIn integration.
