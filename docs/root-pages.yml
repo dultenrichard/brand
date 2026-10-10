@@ -1,0 +1,44 @@
+# Install this file as .github/workflows/pages.yml in dultenrichard.github.io.
+# It deploys only approved source main; redesign branches cannot publish production.
+name: Publish approved personal website
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: dultenrichard/dultenrichard
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python scripts/validate_site.py
+      - run: python scripts/check_links.py
+      - uses: actions/configure-pages@v5
+      - name: Package public files only
+        run: |
+          mkdir _site
+          cp -R *.html *.css *.js *.png *.webp robots.txt sitemap.xml llms.txt data assets experience skills awards sources contact privacy timeline brand _site/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy approved main
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify real published routes
+        run: python scripts/check_links.py --published https://dultenrichard.github.io/ --report /tmp/published-links.json

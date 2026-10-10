@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main, dev]
   push:
-    branches: [dev]
+    branches: [dev, "redesign/**"]
 
 permissions:
   contents: read
@@ -24,5 +24,24 @@ jobs:
       - name: Validate local site structure
         run: python scripts/validate_site.py
 
+      - name: Crawl routes, fragments, metadata and assets
+        run: python scripts/check_links.py --report /tmp/link-report.json
+
       - name: Check JavaScript syntax
         run: node --check site.js
+
+      - name: Upload reviewable source
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-review
+          path: |
+            **/*.html
+            *.css
+            site.js
+            *.png
+            *.webp
+            data/
+            assets/
+            robots.txt
+            sitemap.xml
+          retention-days: 14

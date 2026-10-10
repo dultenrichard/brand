@@ -1,0 +1,343 @@
+{
+  "html_pages": 44,
+  "internal_references_tested": 680,
+  "asset_references": 76,
+  "external_unique_links": 14,
+  "internal_errors": [],
+  "external_results": [
+    {
+      "url": "https://aircadetleague.com/awards/acl-air-cadet-service-medal-current-cadets/",
+      "status": 200,
+      "final_url": "https://aircadetleague.com/awards/acl-air-cadet-service-medal-current-cadets/"
+    },
+    {
+      "url": "https://ca.linkedin.com/in/dultenrpfromentin",
+      "status": 999,
+      "verification": "unverified",
+      "reason": "Social platform response does not prove the intended profile or post is available to a signed-out visitor"
+    },
+    {
+      "url": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+      "status": 200,
+      "final_url": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+    },
+    {
+      "url": "https://docs.umami.is/docs/faq",
+      "status": 200,
+      "final_url": "https://docs.umami.is/docs/faq"
+    },
+    {
+      "url": "https://github.com/dultenrichard",
+      "status": 200,
+      "final_url": "https://github.com/dultenrichard"
+    },
+    {
+      "url": "https://rccdn.cachefly.net/results/10134_216c448c-b94e-45cb-b720-9f36e2c6f6d0.pdf",
+      "status": 200,
+      "final_url": "https://rccdn.cachefly.net/results/10134_216c448c-b94e-45cb-b720-9f36e2c6f6d0.pdf"
+    },
+    {
+      "url": "https://rotaryottawa.com/page/welcome-to-the-rotary-adventure-in-citizenship-program",
+      "status": 200,
+      "final_url": "https://rotaryottawa.com/page/welcome-to-the-rotary-adventure-in-citizenship-program"
+    },
+    {
+      "url": "https://workwithus.aw.ca/",
+      "status": 200,
+      "final_url": "https://workwithus.aw.ca/"
+    },
+    {
+      "url": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cadets/honours-recognition/chapter-5.html",
+      "status": 200,
+      "final_url": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cadets/honours-recognition/chapter-5.html"
+    },
+    {
+      "url": "https://www.countylive.ca/4-h-awards-showcase-local-youth-achievements/",
+      "status": 200,
+      "final_url": "https://www.countylive.ca/4-h-awards-showcase-local-youth-achievements/"
+    },
+    {
+      "url": "https://www.instagram.com/dulten.r.p/",
+      "status": 200,
+      "final_url": "https://www.instagram.com/dulten.r.p/",
+      "verification": "unverified",
+      "reason": "Social platform response does not prove the intended profile or post is available to a signed-out visitor"
+    },
+    {
+      "url": "https://www.instagram.com/dulten.richard/",
+      "status": 200,
+      "final_url": "https://www.instagram.com/dulten.richard/",
+      "verification": "unverified",
+      "reason": "Social platform response does not prove the intended profile or post is available to a signed-out visitor"
+    },
+    {
+      "url": "https://www.instagram.com/p/DJbjLUrO5Fd/",
+      "status": 200,
+      "final_url": "https://www.instagram.com/p/DJbjLUrO5Fd/",
+      "verification": "unverified",
+      "reason": "Social platform response does not prove the intended profile or post is available to a signed-out visitor"
+    },
+    {
+      "url": "https://www.linkedin.com/jobs/view/community-donation-center-ambassador-at-savers-value-village-4424325517",
+      "status": 200,
+      "final_url": "https://www.linkedin.com/jobs/view/community-donation-center-ambassador-at-savers-value-village-4424325517"
+    }
+  ],
+  "published_results": [
+    {
+      "url": "https://dultenrichard.github.io/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/404.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/awards.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/awards/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/awards.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/awards/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/contact.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/contact/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/experience.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/experience/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/privacy.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/privacy/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/skills.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/skills/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/sources.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/sources/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2019/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2020/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2021/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2022/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2023/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2024/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2025/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/brand/timeline/2026/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/contact.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/contact/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/dulten-fromentin-profile.webp",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/dulten-richard-monogram.png",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/editorial.css",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/experience.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/experience/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/privacy.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/privacy/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/robots.txt",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/site.js",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/sitemap.xml",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/skills.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/skills/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/sources.html",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/sources/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/styles.css",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2019/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2020/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2021/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2022/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2023/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2024/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2025/",
+      "status": 404,
+      "verification": "failed"
+    },
+    {
+      "url": "https://dultenrichard.github.io/timeline/2026/",
+      "status": 404,
+      "verification": "failed"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 "use strict";
+document.documentElement.classList.add("js-ready");
 
 const UMAMI_SRC = "https://cloud.umami.is/script.js";
 const UMAMI_WEBSITE_ID = "83a9f356-ddca-4004-a55c-96f06d9a6b14";
@@ -15,7 +16,7 @@ function storedAnalyticsPreference() {
 function analyticsAllowed() {
   if (navigator.globalPrivacyControl === true) return false;
   if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return false;
-  return storedAnalyticsPreference() !== "off";
+  return storedAnalyticsPreference() === "on";
 }
 
 function flushAnalyticsEvents() {
@@ -446,7 +447,7 @@ if (awardGallery) {
           card.append(p);
         }
         const story = document.createElement("a");
-        story.href = "#" + encodeURIComponent(record.id);
+        story.href = record.story || "#" + encodeURIComponent(record.id);
         story.textContent = "Read the story ↗";
         story.className = "text-link";
         card.append(story);
@@ -590,3 +591,9 @@ if (floatingHeader) {
   window.addEventListener("resize", queueProgress);
   updateProgress();
 })();
+
+// Mark enhancement availability without hiding content if observation fails.
+if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.documentElement.classList.add("motion-ready");
+  setTimeout(() => document.querySelectorAll(".reveal-item").forEach(el => el.classList.add("is-visible")), 1800);
+}
