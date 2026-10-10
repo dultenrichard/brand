@@ -120,18 +120,6 @@
     "kind": "Recognition"
   },
   {
-    "title": "Equinox",
-    "text": "Edel 665 sailing project An approximately 22-foot sailboat, and the practical work needed to get it ready: maintenance planning, a workable budget, and summer mooring around Brockville.",
-    "href": "/projects/#equinox",
-    "kind": "Project"
-  },
-  {
-    "title": "Youth Leadership Workshops",
-    "text": "Business project I’m developing a business offering practical, 45–60 minute leadership workshops for youth sports teams. I’m adapting cadet peer-leadership and group-dynamics lessons into activities about communication, teamwork, and confidence.",
-    "href": "/projects/#youth-leadership-workshops",
-    "kind": "Project"
-  },
-  {
     "title": "Prince Edward County 4-H",
     "text": "2019 Participation in the Maple Syrup Club and Pizza Club is part of my earliest documented community and practical-learning record.",
     "href": "/timeline/2019/#prince-edward-county-4-h",
@@ -432,39 +420,15 @@
     "kind": "Page"
   },
   {
-    "title": "Experience",
-    "text": "Explore Experience",
-    "href": "/experience/",
+    "title": "Highlights",
+    "text": "Explore Highlights",
+    "href": "/#experience",
     "kind": "Page"
   },
   {
-    "title": "Projects",
-    "text": "Explore Projects",
-    "href": "/projects/",
-    "kind": "Page"
-  },
-  {
-    "title": "Timeline",
-    "text": "Explore Timeline",
-    "href": "/timeline/",
-    "kind": "Page"
-  },
-  {
-    "title": "Recognition",
-    "text": "Explore Recognition",
-    "href": "/awards/",
-    "kind": "Page"
-  },
-  {
-    "title": "Skills",
-    "text": "Explore Skills",
-    "href": "/skills/",
-    "kind": "Page"
-  },
-  {
-    "title": "Records",
-    "text": "Explore Records",
-    "href": "/sources/",
+    "title": "LinkedIn",
+    "text": "Explore LinkedIn",
+    "href": "https://www.linkedin.com/in/dultenrpfromentin/",
     "kind": "Page"
   },
   {
