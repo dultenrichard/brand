@@ -297,9 +297,8 @@
     waypoint.setAttribute('aria-label','Navigate homepage chapters');
     waypoint.innerHTML = '<a href="#top" aria-label="Opening, chapter one"><small>01</small><span>Opening</span></a>' +
       '<a href="#about" aria-label="About, chapter two"><small>02</small><span>About</span></a>' +
-      '<a href="#experience" aria-label="Experience, chapter three"><small>03</small><span>Practice</span></a>' +
-      '<a href="#projects" aria-label="Projects, chapter four"><small>04</small><span>Projects</span></a>' +
-      '<a href="#timeline" aria-label="Timeline, chapter five"><small>05</small><span>Archive</span></a>';
+      '<a href="#experience" aria-label="Highlights, chapter three"><small>03</small><span>Highlights</span></a>' +
+      '<a href="#connect" aria-label="Connect, chapter four"><small>04</small><span>Connect</span></a>';
     document.body.append(waypoint);
     const waypointAnchors = Array.from(waypoint.querySelectorAll('a'));
     const markChapter = (idx) => {
@@ -310,7 +309,7 @@
       });
     };
     markChapter(0);
-    const chapters = [currentHero,$('#about'),$('#experience'),$('#projects'),$('#timeline')].filter(Boolean);
+    const chapters = [currentHero,$('#about'),$('#experience'),$('#connect')].filter(Boolean);
     if('IntersectionObserver' in window){
       const chapterObserver=new IntersectionObserver(()=>{
         let active = 0, near = Infinity;
@@ -323,17 +322,6 @@
       },{threshold:[0,.15,.4,.75],rootMargin:'-18% 0px -55% 0px'});
       chapters.forEach(el=>chapterObserver.observe(el));
     }
-
-    const introBand=document.createElement('section');
-    introBand.className='manifesto-interlude';
-    introBand.setAttribute('aria-label','The work in context');
-    introBand.innerHTML='<div class="manifesto-inner shell">' +
-      '<div class="manifesto-no">03 / A thread through the work</div>' +
-      '<h2>Different ground.<br><em>Same responsibility.</em></h2>' +
-      '<div class="manifesto-row"><span>Cadet instruction since 2021</span><span>205 community hours</span><span>Projects in progress</span></div>' +
-      '</div><div class="manifesto-current" aria-hidden="true"><i></i><i></i><i></i></div>';
-    const workSection=$('.selected-work');
-    if(workSection)workSection.after(introBand);
 
     // Visible content is still genuine HTML if scripting or animation is unavailable.
     // The canvas uses deterministic seeded particles and a moving current / chart geometry.
@@ -439,7 +427,7 @@
           entry.target.classList.add('chapter-seen');observer.unobserve(entry.target);
         });
       },{threshold:.12});
-      Array.from(document.querySelectorAll('.about-section,.selected-work,.manifesto-interlude,.project-chapter,.quote-chapter,.archive-invite'))
+      Array.from(document.querySelectorAll('.about-section,.signature-highlights,.closing-chapter'))
         .forEach(el=>emerge.observe(el));
     }
   }
