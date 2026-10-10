@@ -478,10 +478,8 @@
     setSpotlight(0);
 
     // Subtle chartlike light field. Canvas is decoration; all content exists in HTML.
-    const canvas=document.createElement('canvas');
-    canvas.className='spotlight-canvas';
-    canvas.setAttribute('aria-hidden','true');
-    spotlight.prepend(canvas);
+    const canvas=$('.spotlight-canvas',spotlight) || document.createElement('canvas');
+    if(!canvas.isConnected){canvas.className='spotlight-canvas';canvas.setAttribute('aria-hidden','true');spotlight.prepend(canvas);}
     const context=canvas.getContext('2d');
     if(context){
       let width=1,height=1,ratio=1,raf=0,onscreen=true,last=0,phase=0;
