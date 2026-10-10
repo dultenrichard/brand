@@ -93,7 +93,7 @@
     }
     if (matches.length > 30) { const note = document.createElement('p'); note.textContent = 'Showing the first 30 matches. Add another word to narrow your search.'; searchResults.append(note); }
   }
-  if (search && $('.search-open').length && typeof search.showModal === 'function') {
+  if (search && $$('.search-open').length && typeof search.showModal === 'function') {
     $$('.search-open').forEach(button => { button.hidden = false; const key = $('kbd', button); if (key && !/Mac|iPhone|iPad/.test(navigator.platform)) key.textContent = 'Ctrl K'; button.addEventListener('click', () => { runSearch(); openDialog(search, searchInput); }); });
     searchInput.addEventListener('input', runSearch);
     document.addEventListener('keydown', event => {
