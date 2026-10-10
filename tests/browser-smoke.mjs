@@ -37,7 +37,7 @@ await visit('Desktop home', {width:1440,height:900},'/', 'home-desktop.png', asy
   check(await page.locator('.spotlight-select').count()===3,'3 highlight selectors expected');
   check(await page.locator('.spotlight-panel').count()===3,'3 highlight chapters expected');
   check(await page.locator('.spotlight-panel:not([hidden])').count()===1,'exactly 1 featured chapter shown');
-  check(await page.locator('.spotlight-canvas').count()===1,'dynamic stage art missing');
+  check(await page.locator('.spotlight-aura').count()===1,'interactive stage visual composition missing');
   check(await page.locator('.project-chapter,.signature-list,.archive-invite').count()===0,'unwanted catalogue remained');
   check(await page.locator('.site-header nav a[href*="linkedin.com"]').count()===1,'LinkedIn nav');
   await page.locator('[data-spotlight-select="1"]').click();
